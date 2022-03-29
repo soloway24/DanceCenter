@@ -4,77 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d0289d5a-5e23-428f-b02b-26e97fd1ccea" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__antlr_antlr_2_7_7.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_classmate_1_5_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_activation_jakarta_activation_1_2_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_istack_istack_commons_runtime_3_0_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_zaxxer_HikariCP_4_0_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__jakarta_persistence_jakarta_persistence_api_2_2_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__jakarta_transaction_jakarta_transaction_api_1_3_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__jakarta_validation_jakarta_validation_api_2_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_validation_validation_api_2_0_1_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_aspectj_aspectjweaver_1_9_7.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_checkerframework_checker_qual_3_5_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_jaxb_jaxb_runtime_2_3_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_jaxb_txw2_2_3_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_common_hibernate_commons_annotations_5_1_2_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_core_5_6_1_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_validator_hibernate_validator_6_2_0_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jboss_jandex_2_2_3_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_4_2_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_postgresql_postgresql_42_3_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_aop_2_6_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_data_jpa_2_6_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_jdbc_2_6_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_commons_2_6_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_jpa_2_6_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aspects_5_3_13.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_5_3_13.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_orm_5_3_13.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_5_3_13.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/ArtistController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/MainController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/PostController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/SongController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/exceptions/PostNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/exceptions/SongNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/init/DataInit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Artist.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Post.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Song.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/ArtistRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/PostRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/SongRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/ArtistService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/PostService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/SongService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/ArtistServiceInterface.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/PostServiceInterface.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/SongServiceInterface.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/utils/Values.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/files/song1.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/files/song2.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/files/song3.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/mainPage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="d0289d5a-5e23-428f-b02b-26e97fd1ccea" name="Default Changelist" comment="First commit. &#10;Implemented mvc pattern with main models, repositories, services, controllers. Connected PostgreSQL database. Added simple visualization in html with Thymeleaf.">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_devtools_2_6_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/configs/MvcConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/MavenWrapperDownloader.java" beforeDir="false" afterPath="$PROJECT_DIR$/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/danceCenter.iml" beforeDir="false" afterPath="$PROJECT_DIR$/danceCenter.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/SongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/SongController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/init/DataInit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/init/DataInit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Song.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Song.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/SongService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/SongService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/SongServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/SongServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/utils/Values.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/utils/Values.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/song1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/song2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/song3.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/mainPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/mainPage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -105,6 +60,14 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="MERGE" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="JpbToolWindowState">
     <option name="myId2FirstActivated">
@@ -145,17 +108,19 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/files" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect" value="PostgreSQL" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../StorageManager/src/main/resources/data.sql" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+    <property name="settings.editor.selected.configurable" value="advanced.settings" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -167,10 +132,10 @@
       <recent name="D:\IJ IDEA workspace\danceCenter\src\main\resources\static" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.kuznets.danceCenter.services.interfaces" />
       <recent name="com.kuznets.danceCenter.controllers" />
       <recent name="com.kuznets.danceCenter.exceptions" />
       <recent name="com.kuznets.danceCenter.services.implementations" />
-      <recent name="com.kuznets.danceCenter.services.interfaces" />
       <recent name="com.kuznets.danceCenter.repositories" />
     </key>
   </component>
@@ -247,12 +212,31 @@
       <workItem from="1646777374103" duration="3235000" />
       <workItem from="1646854166085" duration="3571000" />
       <workItem from="1646930152230" duration="1961000" />
-      <workItem from="1647020331170" duration="601000" />
+      <workItem from="1647020331170" duration="1038000" />
+      <workItem from="1647107672973" duration="595000" />
+      <workItem from="1647948877003" duration="628000" />
+      <workItem from="1648069263878" duration="848000" />
+      <workItem from="1648234693710" duration="1187000" />
+      <workItem from="1648293227814" duration="14474000" />
+      <workItem from="1648471643909" duration="5903000" />
+      <workItem from="1648558993446" duration="310000" />
+      <workItem from="1648559653893" duration="321000" />
     </task>
+    <task id="LOCAL-00001" summary="First commit. &#10;Implemented mvc pattern with main models, repositories, services, controllers. Connected PostgreSQL database. Added simple visualization in html with Thymeleaf.">
+      <created>1647028928494</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1647028928494</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="application.properties" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -270,5 +254,7 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
+    <MESSAGE value="First commit. &#10;Implemented mvc pattern with main models, repositories, services, controllers. Connected PostgreSQL database. Added simple visualization in html with Thymeleaf." />
+    <option name="LAST_COMMIT_MESSAGE" value="First commit. &#10;Implemented mvc pattern with main models, repositories, services, controllers. Connected PostgreSQL database. Added simple visualization in html with Thymeleaf." />
   </component>
 </project>

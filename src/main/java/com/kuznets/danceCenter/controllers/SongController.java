@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -28,11 +29,19 @@ public class SongController {
     }
 
     @PostMapping("/add")
-    public RedirectView addSong(@RequestParam String name, @RequestParam Set<Artist> artists, Model model, RedirectAttributes redir){
-        RedirectView redirectView= new RedirectView("/",true);
-        String notification = "Композиція '"+name+"' була успішно доданий!";
-        boolean success =  songService.addSong(name, artists);
-// logging
+    public RedirectView addSong(@RequestParam String name, @RequestParam Set<Artist> artists,
+                                @RequestParam MultipartFile file , RedirectAttributes redir){
+
+        RedirectView redirectView = new RedirectView("/",true);
+
+        boolean success = songService.addSong(name, artists, file);
+
+        String notification;
+        if (success)
+            notification = "Композиція '" + name + "' була успішно додана.";
+        else
+            notification = "Композиція '" + name + " не була додана.";
+// log
         redir.addFlashAttribute("success", success);
         redir.addFlashAttribute("notification", notification);
         return redirectView;

@@ -48,9 +48,9 @@ public class DataInit implements ApplicationRunner {
         song2.addArtist(artist1);
         song3.addArtist(artist2);
 
-        song1.setLocation("song1");
-        song2.setLocation("song2");
-        song3.setLocation("song3");
+        song1.setLocation("1");
+        song2.setLocation("2");
+        song3.setLocation("3");
 
         post1.addSong(song1);
         post1.addSong(song2);

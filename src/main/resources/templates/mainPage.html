@@ -17,17 +17,30 @@
     </header>
 </div>
 
-<form action="/songs/add" method="post">
-    <label><span>Name:</span> <input name="name" type="text"/></label>
-    <label><span>artists:</span> <input name="artists" th:each="artist: ${artists}" th:value="${artist.id}" th:text="${artist.name}"
-                                                            type="checkbox"/></label>
-    <button type="submit">Add</button>
-    <button type="reset">Clear</button>
-</form>
+<div class="container w-50">
+    <h4>Add Song</h4>
+    <form action="/songs/add" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Name:</label>
+            <input type="text" class="form-control w-50" name="name">
+        </div>
+        <div class="form-group">
+            <label class="form-check-label">Artists:</label> <br>
+            <input type="checkbox" name="artists"
+                   th:each="artist: ${artists}" th:value="${artist.id}" th:text="${artist.name}"/>
+        </div>
+        <div class="form-group">
+            <label>Load file:</label>
+            <input name="file" type="file" accept=".mp3,audio/*">
+        </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+    <button type="reset" class="btn btn-primary">Clear</button>
+    </form>
+</div>
 
-<div>
+<div class="container">
+    <h4>Added posts</h4>
     <table border="1px">
-        <caption>Added posts</caption>
         <tr th:each="post: ${posts}">
             <td th:text="${post.id}"></td>
             <td th:text="${post.description}"></td>
@@ -40,9 +53,9 @@
     </table>
 </div>
 
-<div>
+<div class="container">
+    <h4>Added songs</h4>
     <table border="1px">
-        <caption>Added songs</caption>
         <tr th:each="song: ${songs}">
             <td th:text="${song.id}"></td>
             <td th:text="${song.name}"></td>
@@ -57,9 +70,9 @@
     </table>
 </div>
 
-<div>
+<div class="container">
+    <h4>Added artists</h4>
     <table border="1px">
-        <caption>Added artists</caption>
         <tr th:each="artist: ${artists}">
             <td th:text="${artist.id}"></td>
             <td th:text="${artist.name}"></td>

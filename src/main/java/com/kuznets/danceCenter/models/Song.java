@@ -34,8 +34,6 @@ public class Song {
     @NotNull
     private Set<Artist> artists = new HashSet<>();
 
-
-
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(mappedBy = "songs", fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST)
@@ -57,6 +55,12 @@ public class Song {
     public Song(String name, Set<Artist> artists) {
         this.name = name;
         this.artists = artists;
+    }
+
+    public Song(String name, Set<Artist> artists, String location) {
+        this.name = name;
+        this.artists = artists;
+        this.location = location;
     }
 
     public void addArtist(Artist artist)

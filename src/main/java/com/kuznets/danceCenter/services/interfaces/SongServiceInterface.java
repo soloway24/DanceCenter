@@ -2,6 +2,7 @@ package com.kuznets.danceCenter.services.interfaces;
 
 import com.kuznets.danceCenter.models.Artist;
 import com.kuznets.danceCenter.models.Song;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import java.util.Set;
 public interface SongServiceInterface {
 
     boolean addSong(String name, Set<Artist> artists);
+    boolean addSong(String name, Set<Artist> artists, MultipartFile file);
 //    Song addSong(Song song);
 
     boolean songExistsById(Long id);
