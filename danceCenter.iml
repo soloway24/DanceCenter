@@ -130,5 +130,6 @@
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-devtools:2.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:2.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org:jaudiotagger:2.0.3" level="project" />
   </component>
 </module>

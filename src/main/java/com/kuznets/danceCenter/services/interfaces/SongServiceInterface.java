@@ -9,8 +9,7 @@ import java.util.Set;
 
 public interface SongServiceInterface {
 
-    boolean addSong(String name, Set<Artist> artists);
-    boolean addSong(String name, Set<Artist> artists, MultipartFile file);
+    boolean addSong(String name, Set<String> artists, MultipartFile file);
 //    Song addSong(Song song);
 
     boolean songExistsById(Long id);

@@ -19,21 +19,34 @@
 
 <div class="container w-50">
     <h4>Add Song</h4>
-    <form action="/songs/add" method="post" enctype="multipart/form-data">
+
+    <form action="/songs/add" method="post" enctype="multipart/form-data" id="addSongForm">
+
         <div class="form-group">
             <label>Name:</label>
-            <input type="text" class="form-control w-50" name="name">
+            <input type="text" class="form-control" name="name">
         </div>
+
+<!--        <div class="form-group">-->
+<!--            <label class="form-check-label">Artists:</label> <br>-->
+<!--            <input type="checkbox" name="artists"-->
+<!--                   th:each="artist: ${artists}" th:value="${artist.id}" th:text="${artist.name}"/>-->
+<!--        </div>-->
+
         <div class="form-group">
-            <label class="form-check-label">Artists:</label> <br>
-            <input type="checkbox" name="artists"
-                   th:each="artist: ${artists}" th:value="${artist.id}" th:text="${artist.name}"/>
+            <label for="artistInputField" class="form-group-label">Add artist:</label>
+            <input type="text" id="artistInputField">
+            <button type="button" class="btn btn-primary" onclick="addArtistToList()">Add</button>
+<!--            <input type="hidden" name="artists" id="artistsSet">-->
+            <ul class="list-group" id="artistList"></ul>
         </div>
-        <div class="form-group">
-            <label>Load file:</label>
-            <input name="file" type="file" accept=".mp3,audio/*">
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="loadFileInput">Load file:</label>
+            <input type="file" class="form-control" name="file" id="loadFileInput" accept=".mp3,audio/*">
         </div>
-    <button type="submit" class="btn btn-primary">Add</button>
+
+    <button type="submit" class="btn btn-primary" id="addSongSubmitBtn">Add</button>
     <button type="reset" class="btn btn-primary">Clear</button>
     </form>
 </div>
@@ -85,6 +98,6 @@
         </tr>
     </table>
 </div>
-
+<script src="../scripts/main.js"></script>
 </body>
 </html>

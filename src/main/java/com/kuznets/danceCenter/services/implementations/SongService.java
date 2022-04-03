@@ -3,6 +3,7 @@ package com.kuznets.danceCenter.services.implementations;
 import com.kuznets.danceCenter.exceptions.SongNotFoundException;
 import com.kuznets.danceCenter.models.Artist;
 import com.kuznets.danceCenter.models.Song;
+import com.kuznets.danceCenter.repositories.ArtistRepository;
 import com.kuznets.danceCenter.repositories.SongRepository;
 import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
 import com.kuznets.danceCenter.utils.Values;
@@ -16,6 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -23,22 +29,19 @@ import java.util.UUID;
 public class SongService implements SongServiceInterface {
 
     private SongRepository songRepository;
+    private ArtistRepository artistRepository;
+
+
     private static Logger logger = LogManager.getLogger(SongService.class);
 
     @Autowired
-    public void setTeacherRepository(SongRepository songRepository) {
+    public void setTeacherRepository(SongRepository songRepository, ArtistRepository artistRepository) {
         this.songRepository = songRepository;
-    }
-
-
-    @Override
-    public boolean addSong(String name, Set<Artist> artists) {
-        songRepository.save(new Song(name, artists));
-        return true;
+        this.artistRepository = artistRepository;
     }
 
     @Override
-    public boolean addSong(@NotNull String name, @NotNull Set<Artist> artists, @NotNull MultipartFile file) {
+    public boolean addSong(@NotNull String name, @NotNull Set<String> artists, @NotNull MultipartFile file) {
         if(name.isEmpty()) {
             //log
             return false;
@@ -58,6 +61,7 @@ public class SongService implements SongServiceInterface {
             // create unique name for file using uuid to avoid collisions
             String uuid = UUID.randomUUID().toString();
             String fileName = uuid + "." + file.getOriginalFilename();
+            fileName = fileName.replaceAll(" ", "_");
             File newFile = new File(uploadPath.getAbsolutePath(), fileName);
 
             // write multipart file to file on disk
@@ -67,9 +71,20 @@ public class SongService implements SongServiceInterface {
                 e.printStackTrace();
             }
 
-            // create Song instance and add it to repository
             String location = Values.BEGIN_FILE_LOCATION + fileName;
-            songRepository.save(new Song(name, artists, location));
+            Set<Artist> artistSet = new HashSet<>();
+
+            for (String artist : artists) {
+                if(artistRepository.existsByName(artist)){
+                    artistSet.add(artistRepository.findByName(artist).iterator().next());
+                }else
+                {
+                    artistSet.add(new Artist(artist));
+                }
+            }
+
+            // create Song instance and add it to repository
+            songRepository.save(new Song(name, artistSet, location));
             return true;
         }
         return false;

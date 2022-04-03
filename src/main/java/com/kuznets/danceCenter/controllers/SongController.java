@@ -29,7 +29,7 @@ public class SongController {
     }
 
     @PostMapping("/add")
-    public RedirectView addSong(@RequestParam String name, @RequestParam Set<Artist> artists,
+    public RedirectView addSong(@RequestParam String name, @RequestParam Set<String> artists,
                                 @RequestParam MultipartFile file , RedirectAttributes redir){
 
         RedirectView redirectView = new RedirectView("/",true);
