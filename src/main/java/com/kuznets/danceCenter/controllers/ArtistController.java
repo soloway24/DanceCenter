@@ -35,10 +35,10 @@ public class ArtistController {
     }
 
     @PostMapping("/add")
-    public RedirectView addSong(@RequestParam String name, @RequestParam Set<Song> songs, Model model, RedirectAttributes redir){
+    public RedirectView addArtist(@RequestParam String title, @RequestParam Set<Song> songs, Model model, RedirectAttributes redir){
         RedirectView redirectView= new RedirectView("/",true);
-        String notification = "Композиція '"+name+"' була успішно доданий!";
-        boolean success =  artistService.addArtist(name, songs);
+        String notification = "Композиція '"+ title +"' була успішно доданий!";
+        boolean success =  artistService.addArtist(title, songs);
 // logging
         redir.addFlashAttribute("success", success);
         redir.addFlashAttribute("notification", notification);
@@ -47,7 +47,7 @@ public class ArtistController {
 
 
     @PostMapping("/delete")
-    public RedirectView deleteSong(@RequestParam Long id, Model model, RedirectAttributes redir) throws Exception {
+    public RedirectView deleteArtist(@RequestParam Long id, Model model, RedirectAttributes redir) throws Exception {
         RedirectView redirectView = new RedirectView("/",true);
         Artist artist = artistService.getArtistById(id);
         String name = artist.getName();

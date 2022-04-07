@@ -42,8 +42,8 @@ public class SongService implements SongServiceInterface {
     }
 
     @Override
-    public boolean addSong(@NotNull String name, @Null Set<String> artists, @NotNull MultipartFile file) {
-        if(name.isEmpty()) {
+    public boolean addSong(@NotNull String title, @Null Set<String> artists, @NotNull MultipartFile file) {
+        if(title.isEmpty()) {
             //log
             return false;
         }
@@ -59,7 +59,7 @@ public class SongService implements SongServiceInterface {
             if(!uploadPath.exists())
                 uploadPath.mkdir();
 
-            // create unique name for file using uuid to avoid collisions
+            // create unique title for file using uuid to avoid collisions
             String uuid = UUID.randomUUID().toString();
             String fileName = uuid + "." + file.getOriginalFilename();
             fileName = fileName.replaceAll(" ", "_");
@@ -86,10 +86,10 @@ public class SongService implements SongServiceInterface {
                     }
                 }
                 // create Song instance and add it to repository
-                songRepository.save(new Song(name, artistSet, location));
+                songRepository.save(new Song(title, artistSet, location));
             } else
                 // create Song instance and add it to repository
-                songRepository.save(new Song(name, location));
+                songRepository.save(new Song(title, location));
             return true;
         }
         return false;

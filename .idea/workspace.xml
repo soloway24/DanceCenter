@@ -4,13 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d0289d5a-5e23-428f-b02b-26e97fd1ccea" name="Default Changelist" comment="Fixed file upload to the disk directory (correct urls).   &#10;Changed addSong method (how artists are added to a song).">
+    <list default="true" id="d0289d5a-5e23-428f-b02b-26e97fd1ccea" name="Default Changelist" comment="Added /songs/fileInfo endpoint to get audio tag information for a song. &#10;Added artist existence check when adding an artist.&#10;Added getting of song tag info on input file load.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/ArtistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/ArtistController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/SongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/SongController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/init/DataInit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/init/DataInit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Song.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Song.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/SongRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/SongRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/SongService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/SongService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/SongServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/SongServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/scripts/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/scripts/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/mainPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/mainPage.html" afterDir="false" />
     </list>
@@ -141,7 +144,12 @@
       </set>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Spring Boot.DanceCenterApplication">
+    <configuration name="data.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/src/main/resources/data.sql" />
+      <script-mode>FILE</script-mode>
+      <method v="2" />
+    </configuration>
     <configuration name="DanceCenterApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="danceCenter" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.kuznets.danceCenter.DanceCenterApplication" />
@@ -149,6 +157,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Database Script.data.sql" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -231,7 +244,8 @@
       <workItem from="1649102219366" duration="2012000" />
       <workItem from="1649160874535" duration="144000" />
       <workItem from="1649257457215" duration="7353000" />
-      <workItem from="1649311358296" duration="4013000" />
+      <workItem from="1649311358296" duration="4958000" />
+      <workItem from="1649334376910" duration="5994000" />
     </task>
     <task id="LOCAL-00001" summary="First commit. &#10;Implemented mvc pattern with main models, repositories, services, controllers. Connected PostgreSQL database. Added simple visualization in html with Thymeleaf.">
       <created>1647028928494</created>
@@ -254,7 +268,14 @@
       <option name="project" value="LOCAL" />
       <updated>1648995268762</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added /songs/fileInfo endpoint to get audio tag information for a song. &#10;Added artist existence check when adding an artist.&#10;Added getting of song tag info on input file load.">
+      <created>1649319764698</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1649319764698</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -282,14 +303,15 @@
     <MESSAGE value="First commit. &#10;Implemented mvc pattern with main models, repositories, services, controllers. Connected PostgreSQL database. Added simple visualization in html with Thymeleaf." />
     <MESSAGE value="Added file upload to the disk directory.   &#10;Added MvcConfig class to handle resource serving." />
     <MESSAGE value="Fixed file upload to the disk directory (correct urls).   &#10;Changed addSong method (how artists are added to a song)." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed file upload to the disk directory (correct urls).   &#10;Changed addSong method (how artists are added to a song)." />
+    <MESSAGE value="Added /songs/fileInfo endpoint to get audio tag information for a song. &#10;Added artist existence check when adding an artist.&#10;Added getting of song tag info on input file load." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added /songs/fileInfo endpoint to get audio tag information for a song. &#10;Added artist existence check when adding an artist.&#10;Added getting of song tag info on input file load." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/SongController.java</url>
-          <line>78</line>
+          <line>69</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

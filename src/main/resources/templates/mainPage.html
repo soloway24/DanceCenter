@@ -22,16 +22,15 @@
 
     <form action="/songs/add" method="post" enctype="multipart/form-data" id="addSongForm">
 
-        <div class="form-group">
-            <label>Name:</label>
-            <input type="text" class="form-control" name="name">
+        <div class="form-group" id="titleAddDiv" style="display: none;">
+            <label>Title:</label>
+            <input type="text" class="form-control" name="title" id="addSongTitleField">
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="artistAddDiv" style="display: none;">
             <label for="artistInputField" class="form-group-label">Add artist:</label>
             <input type="text" id="artistInputField">
-            <button type="button" class="btn btn-primary" onclick="addArtistToList()">Add</button>
-<!--            <input type="hidden" name="artists" id="artistsSet">-->
+            <button type="button" class="btn btn-primary" onclick="addArtistFromInputField()">Add</button>
             <ul class="list-group" id="artistList"></ul>
         </div>
 
@@ -40,8 +39,8 @@
             <input type="file" class="form-control" name="file" id="loadFileInput" accept=".mp3,audio/*">
         </div>
 
-    <button type="submit" class="btn btn-primary" id="addSongSubmitBtn">Add</button>
-    <button type="reset" class="btn btn-primary" id="addSongResetBtn">Clear</button>
+    <button type="submit" class="btn btn-primary" id="addSongSubmitBtn" style="display: none;">Add</button>
+    <button type="reset" class="btn btn-primary" id="addSongResetBtn" style="display: none;">Clear</button>
     </form>
 </div>
 
@@ -65,7 +64,7 @@
     <table border="1px">
         <tr th:each="song: ${songs}">
             <td th:text="${song.id}"></td>
-            <td th:text="${song.name}"></td>
+            <td th:text="${song.title}"></td>
             <td th:text="${song.artists}"></td>
             <input type="hidden" th:value="${song.location}">
             <td><audio controls th:src="${song.location}"></audio></td>

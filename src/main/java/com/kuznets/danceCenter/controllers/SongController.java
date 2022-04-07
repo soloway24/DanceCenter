@@ -1,31 +1,22 @@
 package com.kuznets.danceCenter.controllers;
 
-import com.kuznets.danceCenter.models.Artist;
 import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
 import com.kuznets.danceCenter.utils.Values;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
-import org.jaudiotagger.tag.TagException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.validation.constraints.Null;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -42,17 +33,17 @@ public class SongController {
     }
 
     @PostMapping("/add")
-    public RedirectView addSong(@RequestParam String name, @RequestParam(required = false) Set<String> artists,
+    public RedirectView addSong(@RequestParam String title, @RequestParam(required = false) Set<String> artists,
                                 @RequestParam MultipartFile file , RedirectAttributes redir){
 
         RedirectView redirectView = new RedirectView("/",true);
 
-        boolean success = songService.addSong(name, artists, file);
+        boolean success = songService.addSong(title, artists, file);
         String notification;
         if (success)
-            notification = "Композиція '" + name + "' була успішно додана.";
+            notification = "Композиція '" + title + "' була успішно додана.";
         else
-            notification = "Композиція '" + name + " не була додана.";
+            notification = "Композиція '" + title + " не була додана.";
 // log
         redir.addFlashAttribute("success", success);
         redir.addFlashAttribute("notification", notification);
@@ -63,8 +54,8 @@ public class SongController {
     @PostMapping("/delete")
     public RedirectView deleteSong(@RequestParam Long id, RedirectAttributes redir) throws Exception {
         RedirectView redirectView = new RedirectView("/",true);
-        String name = songService.getSongById(id).getName();
-        String notification = "Композиція '"+ name +"' була успішно видалена!";
+        String title = songService.getSongById(id).getTitle();
+        String notification = "Композиція '"+ title +"' була успішно видалена!";
         boolean success =  songService.deleteSong(id);
 //logging
         redir.addFlashAttribute("success", success);

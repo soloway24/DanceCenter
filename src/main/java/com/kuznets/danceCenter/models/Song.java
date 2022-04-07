@@ -1,6 +1,5 @@
 package com.kuznets.danceCenter.models;
 
-import com.kuznets.danceCenter.utils.Values;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -19,7 +18,7 @@ public class Song {
 
     @Column()
     @NotNull
-    private String name;
+    private String title;
 
     @Column()
     @NotNull
@@ -43,13 +42,13 @@ public class Song {
     public Song() {
     }
 
-    public Song(String name, String location) {
-        this.name = name;
+    public Song(String title, String location) {
+        this.title = title;
         this.location = location;
     }
 
-    public Song(String name, Set<Artist> artists, String location) {
-        this.name = name;
+    public Song(String title, Set<Artist> artists, String location) {
+        this.title = title;
         this.artists = artists;
         this.location = location;
     }
@@ -71,19 +70,19 @@ public class Song {
 
     @Override
     public String toString() {
-        return name;
+        return title;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Set<Artist> getArtists() {

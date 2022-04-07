@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SongRepository extends CrudRepository<Song,Long> {
 
-    Iterable<Song> findByName(String s);
+    Iterable<Song> findByTitle(String title);
 
 
-    @Query("select case when count(t)> 0 then true else false end from Song t where lower(t.name) like lower(concat('%', :name,'%'))")
-    boolean existsByName(@Param("name") String name);
+    @Query("select case when count(t)> 0 then true else false end from Song t where lower(t.title) like lower(concat('%', :title,'%'))")
+    boolean existsByTitle(@Param("title") String title);
 
 }
