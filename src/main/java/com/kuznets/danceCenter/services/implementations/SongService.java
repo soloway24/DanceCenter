@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -41,12 +42,12 @@ public class SongService implements SongServiceInterface {
     }
 
     @Override
-    public boolean addSong(@NotNull String name, @NotNull Set<String> artists, @NotNull MultipartFile file) {
+    public boolean addSong(@NotNull String name, @Null Set<String> artists, @NotNull MultipartFile file) {
         if(name.isEmpty()) {
             //log
             return false;
         }
-        if(artists.isEmpty())
+        if(artists != null && artists.isEmpty())
         {
             //log
             return false;
@@ -72,19 +73,23 @@ public class SongService implements SongServiceInterface {
             }
 
             String location = Values.BEGIN_FILE_LOCATION + fileName;
-            Set<Artist> artistSet = new HashSet<>();
 
-            for (String artist : artists) {
-                if(artistRepository.existsByName(artist)){
-                    artistSet.add(artistRepository.findByName(artist).iterator().next());
-                }else
-                {
-                    artistSet.add(new Artist(artist));
+            if(artists != null)
+            {
+                Set<Artist> artistSet = new HashSet<>();
+                for (String artist : artists) {
+                    if(artistRepository.existsByName(artist)){
+                        artistSet.add(artistRepository.findByName(artist).iterator().next());
+                    }else
+                    {
+                        artistSet.add(new Artist(artist));
+                    }
                 }
-            }
-
-            // create Song instance and add it to repository
-            songRepository.save(new Song(name, artistSet, location));
+                // create Song instance and add it to repository
+                songRepository.save(new Song(name, artistSet, location));
+            } else
+                // create Song instance and add it to repository
+                songRepository.save(new Song(name, location));
             return true;
         }
         return false;
@@ -99,6 +104,17 @@ public class SongService implements SongServiceInterface {
     @Override
     public boolean deleteSong(Long id) {
         if(!songExistsById(id)) throw new SongNotFoundException(id);
+        try {
+
+            File uploadPath = new File(Values.UPLOAD_PATH);
+            if(!uploadPath.exists())
+                throw new Exception("Upload folder doesn't exist.");
+
+            File file = new File(uploadPath.getAbsolutePath() + "/" + getSongById(id).getLocation().substring(6));
+            file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         songRepository.deleteById(id);
         return true;
     }

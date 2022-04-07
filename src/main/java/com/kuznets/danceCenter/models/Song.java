@@ -40,21 +40,12 @@ public class Song {
     @NotNull
     private Set<Post> posts = new HashSet<>();
 
-    public Song(String name) {
-        this.name = name;
-    }
-
-    public Song(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public Song() {
     }
 
-    public Song(String name, Set<Artist> artists) {
+    public Song(String name, String location) {
         this.name = name;
-        this.artists = artists;
+        this.location = location;
     }
 
     public Song(String name, Set<Artist> artists, String location) {
@@ -116,6 +107,6 @@ public class Song {
     }
 
     public void setLocation(String location) {
-        this.location = Values.BEGIN_FILE_LOCATION + location + Values.END_FILE_LOCATION;
+        this.location = location;
     }
 }

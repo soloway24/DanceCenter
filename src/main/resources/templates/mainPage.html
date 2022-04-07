@@ -27,12 +27,6 @@
             <input type="text" class="form-control" name="name">
         </div>
 
-<!--        <div class="form-group">-->
-<!--            <label class="form-check-label">Artists:</label> <br>-->
-<!--            <input type="checkbox" name="artists"-->
-<!--                   th:each="artist: ${artists}" th:value="${artist.id}" th:text="${artist.name}"/>-->
-<!--        </div>-->
-
         <div class="form-group">
             <label for="artistInputField" class="form-group-label">Add artist:</label>
             <input type="text" id="artistInputField">
@@ -47,7 +41,7 @@
         </div>
 
     <button type="submit" class="btn btn-primary" id="addSongSubmitBtn">Add</button>
-    <button type="reset" class="btn btn-primary">Clear</button>
+    <button type="reset" class="btn btn-primary" id="addSongResetBtn">Clear</button>
     </form>
 </div>
 
