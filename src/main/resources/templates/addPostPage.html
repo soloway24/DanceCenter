@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${appName}"></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+
+    <header class="mb-5">
+        <h1 th:text="${appName}"></h1>
+    </header>
+</div>
+
+<div class="container w-50">
+    <h4>Add Post</h4>
+
+    <form action="/posts/add" method="post" enctype="multipart/form-data" id="addPostForm">
+
+        <div class="form-group" id="postDescAddDiv">
+            <label>Description:</label>
+            <input type="text" class="form-control" name="description" id="editPostDescriptionField">
+        </div>
+
+    </form>
+
+    <div th:if="${notifications}">
+        <p  th:each="notif : ${notifications}" th:text="${notif}"></p>
+    </div>
+
+
+
+    <div id="addedSongsDiv">
+        <h4>Added songs</h4>
+        <table th:if="${postSongs}" border="1px">
+            <tr th:each="song : ${postSongs}">
+                <td th:text="${song.id}"></td>
+                <td th:text="${song.title}"></td>
+                <td th:text="${song.artists}"></td>
+                <input type="hidden" th:value="${song.location}">
+                <td><audio controls th:src="'../'+${song.location}"></audio></td>
+                <td><form action="../songs/delete/" method="post">
+                    <input name="id" type="hidden" th:value="${song.id}">
+                    <button type="submit">Delete</button>
+                </form></td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="addSongsDiv">
+        <h4>Add Song</h4>
+
+        <div class="input-group mt-3 mb-3">
+            <label class="input-group-text" for="loadFileInput">Load file:</label>
+            <input type="file" class="form-control" name="file" id="loadFileInput" accept=".mp3,audio/*" multiple>
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary" id="addSongsSubmitBtn">Add</button>
+            <button type="reset" class="btn btn-primary" id="addSongsResetBtn">Clear</button>
+        </div>
+
+    </div>
+</div>
+
+<script src="../js/addPost.js"></script>
+</body>
+</html>

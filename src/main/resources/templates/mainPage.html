@@ -17,32 +17,37 @@
     </header>
 </div>
 
+<p th:if="${notification}" th:text="${notification}"></p>
+
 <div class="container w-50">
     <h4>Add Song</h4>
 
     <form action="/songs/add" method="post" enctype="multipart/form-data" id="addSongForm">
 
         <div class="form-group" id="titleAddDiv" style="display: none;">
-            <label>Title:</label>
+            <label for="addSongTitleField">Title:</label>
             <input type="text" class="form-control" name="title" id="addSongTitleField">
         </div>
 
         <div class="form-group" id="artistAddDiv" style="display: none;">
-            <label for="artistInputField" class="form-group-label">Add artist:</label>
-            <input type="text" id="artistInputField">
-            <button type="button" class="btn btn-primary" onclick="addArtistFromInputField()">Add</button>
-            <ul class="list-group" id="artistList"></ul>
+            <div class="form-group">
+                <label for="artistInputField" class="form-group-label">Add artist:</label>
+                <input type="text" id="artistInputField">
+                <button type="button" class="btn btn-primary" onclick="addArtistFromInputField()">Add</button>
+            </div>
+            <div class="form-group" id="artistList"></div>
         </div>
 
         <div class="input-group mb-3">
             <label class="input-group-text" for="loadFileInput">Load file:</label>
-            <input type="file" class="form-control" name="file" id="loadFileInput" accept=".mp3,audio/*">
+            <input type="file" class="form-control" name="file" id="loadFileInput" accept=".mp3,audio/*" multiple>
         </div>
 
     <button type="submit" class="btn btn-primary" id="addSongSubmitBtn" style="display: none;">Add</button>
     <button type="reset" class="btn btn-primary" id="addSongResetBtn" style="display: none;">Clear</button>
     </form>
 </div>
+
 
 <div class="container">
     <h4>Added posts</h4>
@@ -58,6 +63,25 @@
         </tr>
     </table>
 </div>
+
+<div class="container" th:each="post : ${posts}">
+    <h4 th:text="|Songs in Post ${post.id}|"></h4>
+    <table border="1px">
+        <tr th:each="song: ${post.songs}">
+            <td th:text="${song.id}"></td>
+            <td th:text="${song.title}"></td>
+            <td th:text="${song.artists}"></td>
+            <input type="hidden" th:value="${song.location}">
+            <td><audio controls th:src="${song.location}"></audio></td>
+            <td><form action="songs/delete/" method="post">
+                <input name="id" type="hidden" th:value="${song.id}">
+                <button type="submit">Delete</button>
+            </form></td>
+        </tr>
+    </table>
+</div>
+
+
 
 <div class="container">
     <h4>Added songs</h4>
@@ -91,6 +115,6 @@
         </tr>
     </table>
 </div>
-<script src="../scripts/main.js"></script>
+<script src="../js/main.js"></script>
 </body>
 </html>

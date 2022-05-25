@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -70,7 +71,10 @@ public class Song {
 
     @Override
     public String toString() {
-        return title;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Title: " + title + ", Artists: ");
+        artists.forEach(artist -> sb.append(artist.getName() + ", "));
+        return  sb.substring(0, sb.length() - 2);
     }
 
     public Long getId() {

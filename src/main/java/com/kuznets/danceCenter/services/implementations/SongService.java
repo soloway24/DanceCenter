@@ -21,10 +21,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class SongService implements SongServiceInterface {
@@ -42,15 +39,15 @@ public class SongService implements SongServiceInterface {
     }
 
     @Override
-    public boolean addSong(@NotNull String title, @Null Set<String> artists, @NotNull MultipartFile file) {
+    public Optional<Song> addSong(@NotNull String title, @Null Set<String> artists, @NotNull MultipartFile file) {
         if(title.isEmpty()) {
             //log
-            return false;
+            return Optional.empty();
         }
         if(artists != null && artists.isEmpty())
         {
             //log
-            return false;
+            return Optional.empty();
         }
         if(!file.getOriginalFilename().isEmpty())
         {
@@ -74,6 +71,7 @@ public class SongService implements SongServiceInterface {
 
             String location = Values.BEGIN_FILE_LOCATION + fileName;
 
+            Song createdSong;
             if(artists != null)
             {
                 Set<Artist> artistSet = new HashSet<>();
@@ -86,19 +84,36 @@ public class SongService implements SongServiceInterface {
                     }
                 }
                 // create Song instance and add it to repository
-                songRepository.save(new Song(title, artistSet, location));
+                createdSong = songRepository.save(new Song(title, artistSet, location));
             } else
                 // create Song instance and add it to repository
-                songRepository.save(new Song(title, location));
-            return true;
+                createdSong = songRepository.save(new Song(title, location));
+            return Optional.of(createdSong);
         }
-        return false;
+        return Optional.empty();
     }
 
     @Override
     public boolean songExistsById(Long id)
     {
         return songRepository.existsById(id);
+    }
+
+    @Override
+    public List<Long> removeNonExistentIds(List<Long> ids) {
+        List<Long> existingIds = new ArrayList<>();
+        for(Long id : ids)
+            if(songRepository.existsById(id))
+                existingIds.add(id);
+        return existingIds;
+    }
+
+    @Override
+    public String idListToString(List<Long> ids) {
+        StringBuilder sb = new StringBuilder();
+        for(Long id : ids)
+            sb.append(id.toString()+',');
+        return sb.substring(0, sb.length() - 1);
     }
 
     @Override

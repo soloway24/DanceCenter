@@ -36,8 +36,7 @@ public class ArtistService implements ArtistServiceInterface {
 
     @Override
     public boolean deleteArtist(Long id) {
-        if(artistExistsById(id))
-        {
+        if(artistExistsById(id)) {
             artistRepository.deleteById(id);
             return true;
         }

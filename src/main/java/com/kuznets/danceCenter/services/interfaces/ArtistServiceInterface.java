@@ -16,7 +16,7 @@ public interface ArtistServiceInterface {
     boolean deleteArtist(Long id);
 
 //    boolean updateArtist(Long id, String newName);
-//    boolean updateSong(Long id, String newName, Set<Artist> artists);
+//    boolean updateArtist(Long id, String newName, Set<Artist> artists);
 //    Teacher updateTeacher(Teacher teacher);
 
     Artist getArtistById(Long id) throws Exception;

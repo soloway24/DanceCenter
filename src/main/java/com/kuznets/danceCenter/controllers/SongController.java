@@ -1,5 +1,7 @@
 package com.kuznets.danceCenter.controllers;
 
+import com.kuznets.danceCenter.models.Artist;
+import com.kuznets.danceCenter.models.Song;
 import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
 import com.kuznets.danceCenter.utils.Values;
 import org.apache.logging.log4j.LogManager;
@@ -8,17 +10,19 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
+import org.json.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/songs")
@@ -34,39 +38,106 @@ public class SongController {
 
     @PostMapping("/add")
     public RedirectView addSong(@RequestParam String title, @RequestParam(required = false) Set<String> artists,
-                                @RequestParam MultipartFile file , RedirectAttributes redir){
+                                @RequestParam MultipartFile file , RedirectAttributes redir, Model model){
 
-        RedirectView redirectView = new RedirectView("/",true);
+        RedirectView redirectView = new RedirectView("/addPost",true);
 
-        boolean success = songService.addSong(title, artists, file);
+        ArrayList<Song> songs = new ArrayList<>();
         String notification;
-        if (success)
+        boolean success;
+        try {
+            songs.add(songService.addSong(title, artists, file).orElseThrow());
             notification = "Композиція '" + title + "' була успішно додана.";
-        else
+            success = true;
+            redir.addFlashAttribute("postSongs", songs);
+        } catch (Exception e) {
             notification = "Композиція '" + title + " не була додана.";
+            success = false;
+        }
+
 // log
         redir.addFlashAttribute("success", success);
         redir.addFlashAttribute("notification", notification);
         return redirectView;
     }
 
+    @PostMapping("/multipleAdd")
+    @ResponseBody
+    public List<Long> addMultipleSongs(@RequestParam(name = "titles") String titlesUnparsed, @RequestParam(name = "artists", required = false) String artistsUnparsed,
+                                         @RequestParam(name = "files") MultipartFile[] files , RedirectAttributes redir){
+        JSONArray titlesJson = new JSONArray(titlesUnparsed);
+
+        JSONArray artistListsJson = new JSONArray(artistsUnparsed);
+        ArrayList<Set<String>> artists = new ArrayList<>();
+        ArrayList<String> titles = new ArrayList<>();
+        int nFiles = titlesJson.length();
+
+
+        for (int i = 0; i < nFiles; i++) {
+            titles.add(titlesJson.get(i).toString());
+
+            JSONArray currentArtistsJson = new JSONArray(artistListsJson.get(i).toString());
+            Set<String> currentArtists = new HashSet<>();
+            for(int j = 0; j < currentArtistsJson.length(); j++)
+                currentArtists.add(currentArtistsJson.get(j).toString());
+            artists.add(currentArtists);
+        }
+
+        RedirectView redirectView = new RedirectView("/addPost",true);
+        boolean[] successes = new boolean[nFiles];
+        ArrayList<Song> songs = new ArrayList<>();
+        String[] notifications = new String[nFiles];
+
+        for(int i = 0; i < nFiles; i++) {
+            try {
+                songs.add(songService.addSong(titles.get(i), artists.get(i), files[i]).orElseThrow());
+                notifications[i] = "Композиція '" + titles.get(i) + "' була успішно додана.";
+                successes[i] = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                notifications[i] = "Композиція '" + titles.get(i) + " не була додана.";
+                successes[i] = false;
+            }
+        }
+        return songs.stream().map(Song::getId).collect(Collectors.toList());
+// log
+//        redir.addFlashAttribute("successes", successes);
+//        redir.addFlashAttribute("postSongs", songs);
+//        redir.addFlashAttribute("notifications", notifications);
+//        return redirectView;
+    }
 
     @PostMapping("/delete")
-    public RedirectView deleteSong(@RequestParam Long id, RedirectAttributes redir) throws Exception {
-        RedirectView redirectView = new RedirectView("/",true);
+    public RedirectView deleteSong(@RequestParam Long id, HttpServletRequest request, RedirectAttributes redir) throws Exception {
+        String referer = request.getHeader("Referer");
+
         String title = songService.getSongById(id).getTitle();
         String notification = "Композиція '"+ title +"' була успішно видалена!";
         boolean success =  songService.deleteSong(id);
 //logging
         redir.addFlashAttribute("success", success);
         redir.addFlashAttribute("notification", notification);
-        return redirectView;
+        return new RedirectView(referer,true);
     }
 
 
     @PostMapping("/fileInfo")
     @ResponseBody
     public HashMap<String,String> getFileInfo(@RequestParam("file") MultipartFile file){
+        return getSingleFileInfo(file);
+    }
+
+    @PostMapping("/multipleFileInfo")
+    @ResponseBody
+    public ArrayList<HashMap<String,String>> getMultipleFileInfo(@RequestParam("files") List<MultipartFile> files){
+        ArrayList<HashMap<String,String>> list = new ArrayList<>();
+        for(MultipartFile file : files){
+            list.add(getSingleFileInfo(file));
+        }
+        return list;
+    }
+
+    private HashMap<String,String> getSingleFileInfo(MultipartFile file) {
         AudioFile audioFile = null;
         HashMap<String, String > map = new HashMap<>();
 
@@ -97,4 +168,5 @@ public class SongController {
         }
         return map;
     }
+
 }

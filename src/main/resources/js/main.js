@@ -38,6 +38,8 @@ loadFileInput.onchange = async function () {
 
 addSongResetBtn.onclick = function () {
     resetArtistList();
+    titleAddDiv.style.display = "none";
+    artistAddDiv.style.display = "none";
 }
 
 function setAddSongTitleField(title) {
@@ -76,6 +78,9 @@ function addArtistFromInputField() {
     artistInputField.value = "";
 }
 
+let artistCounter = 0;
+let artistPrefix = "artist";
+let buttonPrefix = "button";
 function addArtistToList(artist) {
     if (artist === null || artist === undefined) {
         console.error("Artist is not set.");
@@ -89,16 +94,30 @@ function addArtistToList(artist) {
         console.error("Duplicate artist.");
         return;
     }
+    let br = document.createElement('br');
 
-    let input = document.createElement('input');
-    input.setAttribute("type", "hidden");
-    input.setAttribute("name", "artists");
-    input.value = artist;
-    let li = document.createElement('li');
-    li.classList.add('list-group-item');
-    li.appendChild(document.createTextNode(artist));
-    artistList.appendChild(li);
-    artistList.appendChild(input);
+    let textField = document.createElement('input');
+    textField.setAttribute("type", "text");
+    textField.setAttribute("name", "artists");
+    textField.value = artist;
+
+    let deleteButton = document.createElement('button');
+    deleteButton.classList.add("btn", "btn-outline-secondary");
+    deleteButton.setAttribute("type", "button");
+    deleteButton.onclick = function () {
+        artistList.removeChild(textField);
+        artistList.removeChild(deleteButton);
+        artistList.removeChild(br);
+        if(artistList.childElementCount === 0)
+            artistList.style.display = "none";
+    }
+    deleteButton.value = "Delete";
+    deleteButton.innerHTML = "Delete";
+
+    artistList.appendChild(textField);
+    artistList.appendChild(deleteButton);
+    artistList.appendChild(br);
+
 }
 
 function artistListContains(artist) {
