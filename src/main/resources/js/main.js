@@ -62,26 +62,12 @@ function resetArtistList() {
     artistList.innerHTML = "";
 }
 
-// addSongSubmitBtn.onclick = function (e) {
-//     let formData = new FormData(addSongForm);
-// //check new form-data values
-//     for (let p of formData) {
-//         let title = p[0];
-//         let value = p[1];
-//         console.log(title, value)
-//     }
-//     e.preventDefault();
-// }
-
-function addArtistFromInputField() {
-    addArtistToList(artistInputField.value);
-    artistInputField.value = "";
+function addArtistFromInput(artistInput, artistList) {
+    addArtistToList(artistInput.value, artistList);
+    artistInput.value = "";
 }
 
-let artistCounter = 0;
-let artistPrefix = "artist";
-let buttonPrefix = "button";
-function addArtistToList(artist) {
+function addArtistToList(artist, artistList) {
     if (artist === null || artist === undefined) {
         console.error("Artist is not set.");
         return;
@@ -90,7 +76,7 @@ function addArtistToList(artist) {
         console.error("Artist is blank.");
         return;
     }
-    if (artistListContains(artist)){
+    if (artistListContains(artistList, artist)){
         console.error("Duplicate artist.");
         return;
     }
@@ -117,10 +103,9 @@ function addArtistToList(artist) {
     artistList.appendChild(textField);
     artistList.appendChild(deleteButton);
     artistList.appendChild(br);
-
 }
 
-function artistListContains(artist) {
+function artistListContains(artistList, artist) {
     for ( let li of artistList.getElementsByTagName("li")) {
         if (li.textContent.toLowerCase() === artist.toLowerCase())
             return true;

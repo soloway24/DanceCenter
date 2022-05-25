@@ -69,12 +69,17 @@ public class Song {
         artist.getSongs().remove(this);
     }
 
+//    @Override
+//    public String toString() {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("Title: " + title + ", Artists: ");
+//        artists.forEach(artist -> sb.append(artist.getName() + ", "));
+//        return  sb.substring(0, sb.length() - 2);
+//    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Title: " + title + ", Artists: ");
-        artists.forEach(artist -> sb.append(artist.getName() + ", "));
-        return  sb.substring(0, sb.length() - 2);
+        return title;
     }
 
     public Long getId() {

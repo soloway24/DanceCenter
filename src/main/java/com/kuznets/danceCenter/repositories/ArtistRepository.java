@@ -11,8 +11,9 @@ import org.springframework.stereotype.Repository;
 public interface ArtistRepository extends CrudRepository<Artist,Long> {
 
     Iterable<Artist> findByName(String s);
+    boolean existsByName(String name);
 
     @Query("select case when count(t)> 0 then true else false end from Artist t where lower(t.name) like lower(concat('%', :name,'%'))")
-    boolean existsByName(@Param("name") String name);
+    boolean existsByNameText(@Param("name") String name);
 
 }

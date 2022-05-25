@@ -10,17 +10,12 @@ import com.kuznets.danceCenter.utils.Values;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Service
@@ -38,17 +33,15 @@ public class SongService implements SongServiceInterface {
         this.artistRepository = artistRepository;
     }
 
+
+
     @Override
     public Optional<Song> addSong(@NotNull String title, @Null Set<String> artists, @NotNull MultipartFile file) {
         if(title.isEmpty()) {
             //log
             return Optional.empty();
         }
-        if(artists != null && artists.isEmpty())
-        {
-            //log
-            return Optional.empty();
-        }
+
         if(!file.getOriginalFilename().isEmpty())
         {
             // create file upload directory if it doesn't exist
@@ -74,15 +67,7 @@ public class SongService implements SongServiceInterface {
             Song createdSong;
             if(artists != null)
             {
-                Set<Artist> artistSet = new HashSet<>();
-                for (String artist : artists) {
-                    if(artistRepository.existsByName(artist)){
-                        artistSet.add(artistRepository.findByName(artist).iterator().next());
-                    }else
-                    {
-                        artistSet.add(new Artist(artist));
-                    }
-                }
+                Set<Artist> artistSet = createArtistsFromStrings(artists);
                 // create Song instance and add it to repository
                 createdSong = songRepository.save(new Song(title, artistSet, location));
             } else
@@ -91,6 +76,35 @@ public class SongService implements SongServiceInterface {
             return Optional.of(createdSong);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Set<Artist> createArtistsFromStrings(Set<String> artists) {
+        Set<Artist> artistSet = new HashSet<>();
+        for (String artist : artists) {
+            if(artistRepository.existsByName(artist)){
+                artistSet.add(artistRepository.findByName(artist).iterator().next());
+            }else
+            {
+                Artist curArtist = artistRepository.save(new Artist(artist));
+                artistSet.add(curArtist);
+            }
+        }
+        return artistSet;
+    }
+
+    @Override
+    public boolean updateSong(@NotNull Long id, @NotNull String title, @NotNull Set<String> artists) {
+        try {
+            Song song = songRepository.findById(id).orElseThrow();
+            song.setTitle(title);
+            song.setArtists(createArtistsFromStrings(artists));
+            songRepository.save(song);
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -132,6 +146,11 @@ public class SongService implements SongServiceInterface {
         }
         songRepository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public void deleteAll() {
+        songRepository.deleteAll();
     }
 
     @Override

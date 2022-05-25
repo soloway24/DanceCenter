@@ -36,30 +36,48 @@ public class SongController {
         this.songService = songService;
     }
 
-    @PostMapping("/add")
-    public RedirectView addSong(@RequestParam String title, @RequestParam(required = false) Set<String> artists,
-                                @RequestParam MultipartFile file , RedirectAttributes redir, Model model){
+    @PostMapping("/update")
+    public RedirectView updateSong(@RequestParam Long id, @RequestParam String title, @RequestParam Set<String> artists,
+                                   HttpServletRequest request, RedirectAttributes redir){
+        String referer = request.getHeader("Referer");
 
-        RedirectView redirectView = new RedirectView("/addPost",true);
-
-        ArrayList<Song> songs = new ArrayList<>();
         String notification;
-        boolean success;
-        try {
-            songs.add(songService.addSong(title, artists, file).orElseThrow());
+        boolean success = songService.updateSong(id, title, artists);
+        if(success)
             notification = "Композиція '" + title + "' була успішно додана.";
-            success = true;
-            redir.addFlashAttribute("postSongs", songs);
-        } catch (Exception e) {
+        else
             notification = "Композиція '" + title + " не була додана.";
-            success = false;
-        }
 
 // log
         redir.addFlashAttribute("success", success);
         redir.addFlashAttribute("notification", notification);
-        return redirectView;
+         return new RedirectView(referer,true);
     }
+
+//    @PostMapping("/add")
+//    public RedirectView addSong(@RequestParam String title, @RequestParam(required = false) Set<String> artists,
+//                                @RequestParam MultipartFile file , RedirectAttributes redir, Model model){
+//
+//        RedirectView redirectView = new RedirectView("/addPost",true);
+//
+//        ArrayList<Song> songs = new ArrayList<>();
+//        String notification;
+//        boolean success;
+//        try {
+//            songs.add(songService.addSong(title, artists, file).orElseThrow());
+//            notification = "Композиція '" + title + "' була успішно додана.";
+//            success = true;
+//            redir.addFlashAttribute("postSongs", songs);
+//        } catch (Exception e) {
+//            notification = "Композиція '" + title + " не була додана.";
+//            success = false;
+//        }
+//
+//// log
+//        redir.addFlashAttribute("success", success);
+//        redir.addFlashAttribute("notification", notification);
+//        return redirectView;
+//    }
 
     @PostMapping("/multipleAdd")
     @ResponseBody
@@ -120,6 +138,17 @@ public class SongController {
         return new RedirectView(referer,true);
     }
 
+    @PostMapping("/deleteAll")
+    public RedirectView deleteAllSongs(HttpServletRequest request, RedirectAttributes redir) throws Exception {
+        String referer = request.getHeader("Referer");
+
+        String notification = "Усі композиції були успішно видалені!";
+        songService.deleteAll();
+//logging
+        redir.addFlashAttribute("success", true);
+        redir.addFlashAttribute("notification", notification);
+        return new RedirectView(referer,true);
+    }
 
     @PostMapping("/fileInfo")
     @ResponseBody

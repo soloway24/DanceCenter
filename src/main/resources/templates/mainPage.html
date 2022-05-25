@@ -10,111 +10,119 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container">
 
-    <header class="mb-5">
-        <h1 th:text="${appName}"></h1>
-    </header>
-</div>
+    <div class="container">
 
-<p th:if="${notification}" th:text="${notification}"></p>
+        <header class="mb-5">
+            <h1 th:text="${appName}"></h1>
+        </header>
+    </div>
 
-<div class="container w-50">
-    <h4>Add Song</h4>
+    <div class="container w-50">
+        <p th:if="${notification}" th:text="${notification}"></p>
+    </div>
 
-    <form action="/songs/add" method="post" enctype="multipart/form-data" id="addSongForm">
+    <div class="container w-50">
+        <form action="/songs/deleteAll" method="post">
+            <button type="submit" class="btn btn-danger" id="deleteAllBtn">Delete all</button>
+        </form>
+    </div>
 
-        <div class="form-group" id="titleAddDiv" style="display: none;">
-            <label for="addSongTitleField">Title:</label>
-            <input type="text" class="form-control" name="title" id="addSongTitleField">
-        </div>
+<!--    <div class="container w-50">-->
+<!--        <h4>Add Song</h4>-->
+<!--        <form action="/songs/add" method="post" enctype="multipart/form-data" id="addSongForm">-->
 
-        <div class="form-group" id="artistAddDiv" style="display: none;">
-            <div class="form-group">
-                <label for="artistInputField" class="form-group-label">Add artist:</label>
-                <input type="text" id="artistInputField">
-                <button type="button" class="btn btn-primary" onclick="addArtistFromInputField()">Add</button>
-            </div>
-            <div class="form-group" id="artistList"></div>
-        </div>
+<!--            <div class="form-group" id="titleAddDiv" style="display: none;">-->
+<!--                <label for="addSongTitleField">Title:</label>-->
+<!--                <input type="text" class="form-control" name="title" id="addSongTitleField">-->
+<!--            </div>-->
 
-        <div class="input-group mb-3">
-            <label class="input-group-text" for="loadFileInput">Load file:</label>
-            <input type="file" class="form-control" name="file" id="loadFileInput" accept=".mp3,audio/*" multiple>
-        </div>
+<!--            <div class="form-group" id="artistAddDiv" style="display: none;">-->
+<!--                <div class="form-group">-->
+<!--                    <label for="artistInputField" class="form-group-label">Add artist:</label>-->
+<!--                    <input type="text" id="artistInputField">-->
+<!--                    <button type="button" class="btn btn-primary" onclick="addArtistFromInputField()">Add</button>-->
+<!--                </div>-->
+<!--                <div class="form-group" id="artistList"></div>-->
+<!--            </div>-->
 
-    <button type="submit" class="btn btn-primary" id="addSongSubmitBtn" style="display: none;">Add</button>
-    <button type="reset" class="btn btn-primary" id="addSongResetBtn" style="display: none;">Clear</button>
-    </form>
-</div>
+<!--            <div class="input-group mb-3">-->
+<!--                <label class="input-group-text" for="loadFileInput">Load file:</label>-->
+<!--                <input type="file" class="form-control" name="file" id="loadFileInput" accept=".mp3,audio/*" multiple>-->
+<!--            </div>-->
 
-
-<div class="container">
-    <h4>Added posts</h4>
-    <table border="1px">
-        <tr th:each="post: ${posts}">
-            <td th:text="${post.id}"></td>
-            <td th:text="${post.description}"></td>
-            <td th:text="${post.songs}"></td>
-            <td><form action="posts/delete/" method="post">
-                <input name="id" type="hidden" th:value="${post.id}">
-                <button type="submit">Delete</button>
-            </form></td>
-        </tr>
-    </table>
-</div>
-
-<div class="container" th:each="post : ${posts}">
-    <h4 th:text="|Songs in Post ${post.id}|"></h4>
-    <table border="1px">
-        <tr th:each="song: ${post.songs}">
-            <td th:text="${song.id}"></td>
-            <td th:text="${song.title}"></td>
-            <td th:text="${song.artists}"></td>
-            <input type="hidden" th:value="${song.location}">
-            <td><audio controls th:src="${song.location}"></audio></td>
-            <td><form action="songs/delete/" method="post">
-                <input name="id" type="hidden" th:value="${song.id}">
-                <button type="submit">Delete</button>
-            </form></td>
-        </tr>
-    </table>
-</div>
+<!--        <button type="submit" class="btn btn-primary" id="addSongSubmitBtn" style="display: none;">Add</button>-->
+<!--        <button type="reset" class="btn btn-primary" id="addSongResetBtn" style="display: none;">Clear</button>-->
+<!--        </form>-->
+<!--    </div>-->
 
 
+    <div class="container w-50">
+        <h4>Added posts</h4>
+        <table border="1px">
+            <tr th:each="post: ${posts}">
+                <td th:text="${post.id}"></td>
+                <td th:text="${post.description}"></td>
+                <td th:text="${post.songs}"></td>
+                <td><form action="posts/delete/" method="post">
+                    <input name="id" type="hidden" th:value="${post.id}">
+                    <button type="submit">Delete</button>
+                </form></td>
+            </tr>
+        </table>
+    </div>
 
-<div class="container">
-    <h4>Added songs</h4>
-    <table border="1px">
-        <tr th:each="song: ${songs}">
-            <td th:text="${song.id}"></td>
-            <td th:text="${song.title}"></td>
-            <td th:text="${song.artists}"></td>
-            <input type="hidden" th:value="${song.location}">
-            <td><audio controls th:src="${song.location}"></audio></td>
-            <td><form action="songs/delete/" method="post">
-                <input name="id" type="hidden" th:value="${song.id}">
-                <button type="submit">Delete</button>
-            </form></td>
-        </tr>
-    </table>
-</div>
+    <div class="container w-50" th:each="post : ${posts}">
+        <h4 th:text="|Songs in Post ${post.id}|"></h4>
+        <table border="1px">
+            <tr th:each="song: ${post.songs}">
+                <td th:text="${song.id}"></td>
+                <td th:text="${song.title}"></td>
+                <td th:text="${song.artists}"></td>
+                <input type="hidden" th:value="${song.location}">
+                <td><audio controls th:src="${song.location}"></audio></td>
+                <td><form action="songs/delete/" method="post">
+                    <input name="id" type="hidden" th:value="${song.id}">
+                    <button type="submit">Delete</button>
+                </form></td>
+            </tr>
+        </table>
+    </div>
 
-<div class="container">
-    <h4>Added artists</h4>
-    <table border="1px">
-        <tr th:each="artist: ${artists}">
-            <td th:text="${artist.id}"></td>
-            <td th:text="${artist.name}"></td>
-            <td th:text="${artist.songs}"></td>
-            <td><form action="artists/delete/" method="post">
-                <input name="id" type="hidden" th:value="${artist.id}">
-                <input name="artistToString" type="hidden" th:value="${artist.toString()}">
-                <button type="submit">Delete</button>
-            </form></td>
-        </tr>
-    </table>
-</div>
+
+
+    <div class="container w-50">
+        <h4>Added songs</h4>
+        <table border="1px">
+            <tr th:each="song: ${songs}">
+                <td th:text="${song.id}"></td>
+                <td th:text="${song.title}"></td>
+                <td th:text="${song.artists}"></td>
+                <input type="hidden" th:value="${song.location}">
+                <td><audio controls th:src="${song.location}"></audio></td>
+                <td><form action="songs/delete/" method="post">
+                    <input name="id" type="hidden" th:value="${song.id}">
+                    <button type="submit">Delete</button>
+                </form></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="container w-50">
+        <h4>Added artists</h4>
+        <table border="1px">
+            <tr th:each="artist: ${artists}">
+                <td th:text="${artist.id}"></td>
+                <td th:text="${artist.name}"></td>
+                <td th:text="${artist.songs}"></td>
+                <td><form action="artists/delete/" method="post">
+                    <input name="id" type="hidden" th:value="${artist.id}">
+                    <input name="artistToString" type="hidden" th:value="${artist.toString()}">
+                    <button type="submit">Delete</button>
+                </form></td>
+            </tr>
+        </table>
+    </div>
 <script src="../js/main.js"></script>
 </body>
 </html>

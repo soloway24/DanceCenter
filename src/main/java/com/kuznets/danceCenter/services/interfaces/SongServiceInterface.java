@@ -12,12 +12,15 @@ import java.util.Set;
 public interface SongServiceInterface {
 
     Optional<Song> addSong(String title, Set<String> artists, MultipartFile file);
-//    Song addSong(Song song);
+    boolean updateSong(Long id, String title, Set<String> artists);
 
     boolean songExistsById(Long id);
-    List<Long> removeNonExistentIds(List<Long> ids);
-    String idListToString(List<Long> ids);
     boolean deleteSong(Long id);
+    void deleteAll();
+
+    String idListToString(List<Long> ids);
+    List<Long> removeNonExistentIds(List<Long> ids);
+    Set<Artist> createArtistsFromStrings(Set<String> artists);
 
 //    boolean updateSong(Long id, String newName);
 //    boolean updateSong(Long id, String newName, Set<artist> artists);

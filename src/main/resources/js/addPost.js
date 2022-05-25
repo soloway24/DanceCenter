@@ -1,17 +1,65 @@
 let addSongTitleField = document.getElementById("addSongTitleField");
-let addSongsDiv = document.getElementById("addSongsDiv");
-let addSongResetBtn = document.getElementById("addSongResetBtn");
+
 let loadFileInput = document.getElementById("loadFileInput");
-let titleAddDiv = document.getElementById("titleAddDiv");
-let artistAddDiv = document.getElementById("artistAddDiv");
+
 
 
 let editPostDescriptionField = document.getElementById("editPostDescriptionField");
-let addSongsSubmitBtn = document.getElementById("addSongsSubmitBtn");
-let addSongsResetBtn = document.getElementById("addSongsResetBtn");
+let editSongTitleInput = document.getElementById("editSongTitleInput");
 
+let artistInputField = document.getElementById("artistInputField");
+let editedArtistList = document.getElementById("editedArtistList");
+let editSongForm = document.getElementById("editSongForm");
 
-addSongsSubmitBtn.onclick = async function (e) {
+editSongForm.onsubmit = function (e) {
+    let title = editSongTitleInput.value;
+    let artElems = document.getElementsByName("artists");
+    let artValues = artElems.map(elem => elem.value);
+    if(!validateSong(title, artValues)){
+        e.preventDefault();
+    }
+}
+
+function validateSong(title, artists) {
+    if (title === null || title === undefined) {
+        alert("Song title is not set.");
+        return false;
+    }
+    if (!/\S/.test(title)) {
+        alert("Song title is blank.");
+        return false;
+    }
+    for(let art of artists){
+        if (!/\S/.test(art)) {
+            alert("Some of artists are blank.");
+            return false;
+        }
+    }
+    return true;
+}
+
+$('#editSongModal').on('show.bs.modal', function (event) {
+    resetEditedArtistList();
+    let button = $(event.relatedTarget);
+    let id = button.data('song_id');
+    let title = button.data('song_title');
+    let artists = button.data('song_artists');
+    artists = artists.substring(1, artists.length - 1).split(',');
+    console.log(id);
+    console.log(title);
+    console.log(artists);
+    let modal = $(this);
+    modal.find('#editSongTitleInput').val(title);
+    modal.find('#editedSongIdInput').val(id);
+    for(const art of artists)
+        addArtistToList(art, editedArtistList);
+})
+
+function resetEditedArtistList() {
+    editedArtistList.innerHTML = "";
+}
+
+loadFileInput.onchange = async function () {
 
     const nFiles = loadFileInput.files.length;
     if(nFiles < 1){
@@ -76,211 +124,6 @@ const addArtistInputPrefix = "addArtistInput";
 const addArtistButtonPrefix = "addArtistButton";
 const artistListDivPrefix = "artistListDiv";
 
-loadFileInput.onchange = async function () {
-    // let formData = new FormData();
-    // const nFiles = loadFileInput.files.length;
-    // let single =  nFiles === 1;
-    // if(single){
-    //     formData.append("file", loadFileInput.files[0]);
-    // }else{
-    //     for(let i = 0; i < nFiles; i++)
-    //         formData.append("files", loadFileInput.files[i]);
-    // }
-    // console.log(formData.get("files"));
-    //
-    // if(single){
-    //     let tagResponse = await fetch("/songs/fileInfo", {
-    //         method: "POST",
-    //         body: formData,
-    //     });
-    //     let tags;
-    //     await tagResponse.json().then(res => { tags = res; });
-    //
-    //     formData.append("title", tags.TITLE);
-    //     const artists = tags.ARTIST.split('/');
-    //     formData.append("artists", artists);
-    //     let addResponse = await fetch("/songs/add", {
-    //         method: "POST",
-    //         body: formData
-    //     });
-    //     if (addResponse.redirected)
-    //         window.location.href = addResponse.url;
-    //     console.log(addResponse);
-    //
-    // } else {
-    //     let response = await fetch("/songs/multipleFileInfo", {
-    //         method: "POST",
-    //         body: formData,
-    //     });
-    //     let tagList;
-    //     await response.json().then(res => { tagList = res; });
-    //
-    //     console.log(tagList);
-
-        // let addSingleSongWrapper = document.createElement('div');
-        // addSingleSongWrapper.classList.add("card");
-        //
-        // let addSingleSongDiv = document.createElement('div');
-        // addSingleSongDiv.classList.add("card-body");
-        //
-        // //title
-        // let editTitleDiv = document.createElement('div');
-        // editTitleDiv.classList.add("form-group");
-        // editTitleDiv.id = editTitleDivPrefix;
-        //
-        // let editTitleInput = document.createElement('input');
-        // editTitleInput.id = editTitleInputPrefix;
-        // editTitleInput.setAttribute("type", "text");
-        // editTitleInput.setAttribute("name", "title");
-        // editTitleInput.classList.add("form-control");
-        // editTitleInput.value = tags.TITLE;
-        //
-        // let editTitleLabel = document.createElement('label');
-        // editTitleLabel.setAttribute("for", editTitleInput.id);
-        // editTitleLabel.innerHTML = "Title:";
-        //
-        // editTitleDiv.appendChild(editTitleLabel);
-        // editTitleDiv.appendChild(editTitleInput);
-        //
-        //
-        // //authors
-        // let editArtistsDiv = document.createElement('div');
-        // editArtistsDiv.classList.add("form-group");
-        // editArtistsDiv.id = editArtistsDivPrefix;
-        //
-        // let editArtistsInputDiv = document.createElement('div');
-        // editArtistsInputDiv.classList.add("form-group");
-        // editArtistsInputDiv.id = editArtistsInputDivPrefix;
-        //
-        // let addArtistInput = document.createElement('input');
-        // addArtistInput.id = addArtistInputPrefix;
-        // addArtistInput.setAttribute("type", "text");
-        //
-        // let addArtistLabel = document.createElement('label');
-        // addArtistLabel.setAttribute("for", addArtistInput.id);
-        // addArtistLabel.innerHTML = "Add artist  :";
-        //
-        // let addArtistButton = document.createElement('button');
-        // addArtistButton.id = addArtistButtonPrefix;
-        // addArtistButton.classList.add("btn", "btn-primary");
-        // addArtistButton.setAttribute("type", "button");
-        // addArtistButton.innerHTML = "Add";
-        // addArtistButton.onclick = function () {
-        //     addArtistFromInput(addArtistInput, artistListDiv);
-        // }
-        //
-        // let artistListDiv = document.createElement('div');
-        // artistListDiv.classList.add("form-group");
-        // artistListDiv.id = artistListDivPrefix;
-        //
-        // editArtistsInputDiv.appendChild(addArtistLabel);
-        // editArtistsInputDiv.appendChild(addArtistInput);
-        // editArtistsInputDiv.appendChild(addArtistButton);
-        //
-        // editArtistsDiv.appendChild(editArtistsInputDiv);
-        // editArtistsDiv.appendChild(artistListDiv);
-        //
-        // addSingleSongDiv.appendChild(editTitleDiv);
-        // addSingleSongDiv.appendChild(editArtistsDiv);
-        //
-        // addSingleSongWrapper.appendChild(addSingleSongDiv);
-        //
-        // addSongsDiv.firstChild.nextSibling.after(addSingleSongWrapper);
-        //
-        // addArtistToList(tags.ARTIST, artistListDiv);
-
-    // }
-
-
-
-}
-
-function createEditInfoDiv(tagList) {
-    if(tagList.length === undefined) {
-
-    }
-
-}
-
-function createSingle() {
-    let addSingleSongWrapper = document.createElement('div');
-    addSingleSongWrapper.classList.add("card");
-
-    let addSingleSongDiv = document.createElement('div');
-    addSingleSongDiv.classList.add("card-body");
-
-    //title
-    let editTitleDiv = document.createElement('div');
-    editTitleDiv.classList.add("form-group");
-    editTitleDiv.id = editTitleDivPrefix;
-
-    let editTitleInput = document.createElement('input');
-    editTitleInput.id = editTitleInputPrefix;
-    editTitleInput.setAttribute("type", "text");
-    editTitleInput.setAttribute("name", "title");
-    editTitleInput.classList.add("form-control");
-    editTitleInput.value = tags.TITLE;
-
-    let editTitleLabel = document.createElement('label');
-    editTitleLabel.setAttribute("for", editTitleInput.id);
-    editTitleLabel.innerHTML = "Title:";
-
-    editTitleDiv.appendChild(editTitleLabel);
-    editTitleDiv.appendChild(editTitleInput);
-
-
-    //authors
-    let editArtistsDiv = document.createElement('div');
-    editArtistsDiv.classList.add("form-group");
-    editArtistsDiv.id = editArtistsDivPrefix;
-
-    let editArtistsInputDiv = document.createElement('div');
-    editArtistsInputDiv.classList.add("form-group");
-    editArtistsInputDiv.id = editArtistsInputDivPrefix;
-
-    let addArtistInput = document.createElement('input');
-    addArtistInput.id = addArtistInputPrefix;
-    addArtistInput.setAttribute("type", "text");
-
-    let addArtistLabel = document.createElement('label');
-    addArtistLabel.setAttribute("for", addArtistInput.id);
-    addArtistLabel.innerHTML = "Add artist  :";
-
-    let addArtistButton = document.createElement('button');
-    addArtistButton.id = addArtistButtonPrefix;
-    addArtistButton.classList.add("btn", "btn-primary");
-    addArtistButton.setAttribute("type", "button");
-    addArtistButton.innerHTML = "Add";
-    addArtistButton.onclick = function () {
-        addArtistFromInput(addArtistInput, artistListDiv);
-    }
-
-    let artistListDiv = document.createElement('div');
-    artistListDiv.classList.add("form-group");
-    artistListDiv.id = artistListDivPrefix;
-
-    editArtistsInputDiv.appendChild(addArtistLabel);
-    editArtistsInputDiv.appendChild(addArtistInput);
-    editArtistsInputDiv.appendChild(addArtistButton);
-
-    editArtistsDiv.appendChild(editArtistsInputDiv);
-    editArtistsDiv.appendChild(artistListDiv);
-
-    addSingleSongDiv.appendChild(editTitleDiv);
-    addSingleSongDiv.appendChild(editArtistsDiv);
-
-    addSingleSongWrapper.appendChild(addSingleSongDiv);
-
-    addSongsDiv.firstChild.nextSibling.after(addSingleSongWrapper);
-
-    addArtistToList(tags.ARTIST, artistListDiv);
-}
-// <div className="form-group" id="titleAddDiv" style="display: none;">
-//     <label>Title:</label>
-//     <input type="text" className="form-control" name="title" id="addSongTitleField">
-// </div>
-//
-
 
 function setAddSongTitleField(title) {
     if (title === null || title === undefined) {
@@ -295,17 +138,6 @@ function setAddSongTitleField(title) {
 }
 
 
-// addSongSubmitBtn.onclick = function (e) {
-//     let formData = new FormData(addSongForm);
-// //check new form-data values
-//     for (let p of formData) {
-//         let title = p[0];
-//         let value = p[1];
-//         console.log(title, value)
-//     }
-//     e.preventDefault();
-// }
-
 function addArtistFromInput(artistInput, artistList) {
     addArtistToList(artistInput.value, artistList);
     artistInput.value = "";
@@ -313,6 +145,7 @@ function addArtistFromInput(artistInput, artistList) {
 
 
 function addArtistToList(artist, artistList) {
+    console.log("Adding artist: " + artist);
     if (artist === null || artist === undefined) {
         console.error("Artist is not set.");
         return;
@@ -333,14 +166,12 @@ function addArtistToList(artist, artistList) {
     textField.value = artist;
 
     let deleteButton = document.createElement('button');
-    deleteButton.classList.add("btn", "btn-outline-secondary");
+    deleteButton.classList.add("btn", "btn-danger");
     deleteButton.setAttribute("type", "button");
     deleteButton.onclick = function () {
         artistList.removeChild(textField);
         artistList.removeChild(deleteButton);
         artistList.removeChild(br);
-        if(artistList.childElementCount === 0)
-            artistList.style.display = "none";
     }
     deleteButton.value = "Delete";
     deleteButton.innerHTML = "Delete";

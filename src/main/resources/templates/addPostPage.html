@@ -44,19 +44,60 @@
                 <td th:text="${song.artists}"></td>
                 <input type="hidden" th:value="${song.location}">
                 <td><audio controls th:src="'../'+${song.location}"></audio></td>
+                <td>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editSongModal"
+                            th:attr="data-song_id=${song.id},data-song_title=${song.title},data-song_artists=${song.artists}">Edit</button>
+                </td>
                 <td><form action="../songs/delete/" method="post">
                     <input name="id" type="hidden" th:value="${song.id}">
-                    <button type="submit">Delete</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
                 </form></td>
             </tr>
         </table>
     </div>
 
+    <div class="modal fade" id="editSongModal" tabindex="-1" role="dialog" aria-labelledby="editSongModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editSongModalLabel">Edit Song</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="../songs/update" method="post" id="editSongForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="editedSongIdInput" name="id">
+                        <div class="form-group">
+                            <label for="editSongTitleInput" class="col-form-label">Title:</label>
+                            <input type="text" class="form-control" id="editSongTitleInput" name="title">
+                        </div>
+                        <div class="form-group" id="editArtistsDiv">
+                            <label for="editedArtistList" class="col-form-label">Artists:</label>
+                            <div class="form-group" id="editedArtistList">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="artistInputField" class="form-group-label">Add artist:</label>
+                                <input type="text" id="artistInputField">
+                                <button type="button" class="btn btn-primary" onclick="addArtistFromInput(artistInputField, editedArtistList)">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div id="addSongsDiv">
-        <h4>Add Song</h4>
+        <h4>Add Songs</h4>
 
         <div class="input-group mt-3 mb-3">
-            <label class="input-group-text" for="loadFileInput">Load file:</label>
+            <label class="input-group-text" for="loadFileInput">Load files:</label>
             <input type="file" class="form-control" name="file" id="loadFileInput" accept=".mp3,audio/*" multiple>
         </div>
 
