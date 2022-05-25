@@ -1,15 +1,64 @@
 let addSongTitleField = document.getElementById("addSongTitleField");
-
 let loadFileInput = document.getElementById("loadFileInput");
 
-
-
-let editPostDescriptionField = document.getElementById("editPostDescriptionField");
+let editPostDescriptionInput = document.getElementById("editPostDescriptionInput");
 let editSongTitleInput = document.getElementById("editSongTitleInput");
 
 let artistInputField = document.getElementById("artistInputField");
 let editedArtistList = document.getElementById("editedArtistList");
 let editSongForm = document.getElementById("editSongForm");
+
+let addPostBtn = document.getElementById("addPostBtn");
+let resetPostBtn = document.getElementById("resetPostBtn");
+
+addPostBtn.onclick = async function () {
+    let description = editPostDescriptionInput.value;
+    if(!validatePost(description)) return;
+    let songIds = getIdsFromUrl(window.location.href);
+    let formData = new FormData();
+    formData.append("description", description);
+    formData.append("songIds", JSON.stringify(songIds));
+
+    let addPostResponse = await fetch("/posts/add", {
+        method:"POST",
+        body: formData
+    });
+    window.location.href = "/";
+
+}
+
+resetPostBtn.onclick = async function () {
+    resetPostDescription();
+    resetLoadFileInput();
+
+    if(window.location.href.substring(window.location.href.length - 7) !== "addPost"){
+        let idsArray = getIdsFromUrl(window.location.href);
+       await fetch("/songs/multipleDelete",
+            {method:"POST",
+                body: JSON.stringify(idsArray)
+        });
+        window.location.href = "/addPost";
+    }
+
+
+
+}
+
+function getIdsFromUrl(url) {
+    let parts = url.split('/');
+    let idsStr = "";
+    for(let i = 0; i < parts.length; i++){
+        if(parts[i]==="addPost" && i+1 < parts.length){
+            idsStr = parts[i+1];
+            break;
+        }
+    }
+    if(idsStr.length > 0){
+        let idArrayStr = idsStr.split(',');
+        return idArrayStr.map(s => +s);
+    }
+    return undefined;
+}
 
 editSongForm.onsubmit = function (e) {
     let title = editSongTitleInput.value;
@@ -19,7 +68,17 @@ editSongForm.onsubmit = function (e) {
         e.preventDefault();
     }
 }
-
+function validatePost(description) {
+    if (description === null || description === undefined) {
+        alert("Post description is not set.");
+        return false;
+    }
+    if (!/\S/.test(description)) {
+        alert("Post description is blank.");
+        return false;
+    }
+    return true;
+}
 function validateSong(title, artists) {
     if (title === null || title === undefined) {
         alert("Song title is not set.");
@@ -107,13 +166,8 @@ loadFileInput.onchange = async function () {
 
 }
 
-addSongsResetBtn.onclick = function () {
-    resetLoadFileInput();
-    resetPostDescription();
-}
-
 function resetLoadFileInput() {loadFileInput.value = ""; }
-function resetPostDescription() {editPostDescriptionField = ""; }
+function resetPostDescription() {editPostDescriptionInput = ""; }
 
 
 const editTitleInputPrefix = "editTitleInput";

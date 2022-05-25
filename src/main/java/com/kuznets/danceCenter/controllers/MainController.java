@@ -4,6 +4,7 @@ import com.kuznets.danceCenter.models.Song;
 import com.kuznets.danceCenter.services.interfaces.ArtistServiceInterface;
 import com.kuznets.danceCenter.services.interfaces.PostServiceInterface;
 import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
+import com.kuznets.danceCenter.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -61,7 +62,7 @@ public class MainController {
                 }).collect(Collectors.toList());
                 model.addAttribute("postSongs", postSongs);
             }else{
-                String urlIds = songService.idListToString(existingIds);
+                String urlIds = Utils.idListToString(existingIds);
                 System.out.println(urlIds);
                 return "redirect:/addPost/"+urlIds;
             }

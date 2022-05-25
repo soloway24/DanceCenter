@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SongService implements SongServiceInterface {
@@ -122,13 +123,7 @@ public class SongService implements SongServiceInterface {
         return existingIds;
     }
 
-    @Override
-    public String idListToString(List<Long> ids) {
-        StringBuilder sb = new StringBuilder();
-        for(Long id : ids)
-            sb.append(id.toString()+',');
-        return sb.substring(0, sb.length() - 1);
-    }
+
 
     @Override
     public boolean deleteSong(Long id) {
@@ -139,12 +134,19 @@ public class SongService implements SongServiceInterface {
             if(!uploadPath.exists())
                 throw new Exception("Upload folder doesn't exist.");
 
-            File file = new File(uploadPath.getAbsolutePath() + "/" + getSongById(id).getLocation().substring(6));
+            File file = new File(uploadPath.getAbsolutePath() + "/" + getSongById(id).getLocation().substring(Values.BEGIN_FILE_LOCATION.length()));
             file.delete();
         } catch (Exception e) {
             e.printStackTrace();
         }
         songRepository.deleteById(id);
+        return true;
+    }
+
+    @Override
+    public boolean deleteSongsByIds(List<Long> ids) {
+        for(Long id : ids)
+            deleteSong(id);
         return true;
     }
 

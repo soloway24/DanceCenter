@@ -3,6 +3,7 @@ package com.kuznets.danceCenter.controllers;
 import com.kuznets.danceCenter.models.Artist;
 import com.kuznets.danceCenter.models.Song;
 import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
+import com.kuznets.danceCenter.utils.Utils;
 import com.kuznets.danceCenter.utils.Values;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -132,6 +133,18 @@ public class SongController {
         String title = songService.getSongById(id).getTitle();
         String notification = "Композиція '"+ title +"' була успішно видалена!";
         boolean success =  songService.deleteSong(id);
+//logging
+        redir.addFlashAttribute("success", success);
+        redir.addFlashAttribute("notification", notification);
+        return new RedirectView(referer,true);
+    }
+
+    @PostMapping("/multipleDelete")
+    public RedirectView deleteMultipleSongs(@RequestBody String idsUnparsed, HttpServletRequest request, RedirectAttributes redir) throws Exception {
+        String referer = request.getHeader("Referer");
+        List<Long> ids = songService.removeNonExistentIds(Utils.stringToIdList(idsUnparsed));
+        String notification = "Композиції із ID: '"+ ids +"' були успішно видалені!";
+        boolean success =  songService.deleteSongsByIds(ids);
 //logging
         redir.addFlashAttribute("success", success);
         redir.addFlashAttribute("notification", notification);

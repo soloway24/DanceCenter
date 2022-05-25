@@ -23,6 +23,9 @@
     </div>
 
     <div class="container w-50">
+
+        <a class="btn btn-primary" href="/addPost">Add post</a>
+
         <form action="/songs/deleteAll" method="post">
             <button type="submit" class="btn btn-danger" id="deleteAllBtn">Delete all</button>
         </form>
@@ -81,10 +84,12 @@
                 <td th:text="${song.artists}"></td>
                 <input type="hidden" th:value="${song.location}">
                 <td><audio controls th:src="${song.location}"></audio></td>
-                <td><form action="songs/delete/" method="post">
-                    <input name="id" type="hidden" th:value="${song.id}">
-                    <button type="submit">Delete</button>
-                </form></td>
+                <td>
+                    <form action="songs/delete/" method="post">
+                        <input name="id" type="hidden" th:value="${song.id}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
             </tr>
         </table>
     </div>

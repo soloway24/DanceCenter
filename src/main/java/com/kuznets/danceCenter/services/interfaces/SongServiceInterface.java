@@ -16,9 +16,11 @@ public interface SongServiceInterface {
 
     boolean songExistsById(Long id);
     boolean deleteSong(Long id);
+
+    boolean deleteSongsByIds(List<Long> ids);
+
     void deleteAll();
 
-    String idListToString(List<Long> ids);
     List<Long> removeNonExistentIds(List<Long> ids);
     Set<Artist> createArtistsFromStrings(Set<String> artists);
 
