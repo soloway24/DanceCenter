@@ -10,16 +10,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.DecimalMin;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -45,34 +41,48 @@ public class MainController {
         return "mainPage";
     }
 
-    @GetMapping(value = {"/addPost", "/addPost/{postSongsIds}"})
-    public String addPostPage(Model model, @PathVariable(name = "postSongsIds", required = false) String postSongsIds){
+    @GetMapping("/addPost")
+    public String addPostPage(Model model, @RequestParam(name = "postSongsIds", required = false) String postSongsIds,
+                              @RequestParam(name = "description", required = false) String description, RedirectAttributes redir){
+
         if(postSongsIds != null){
             List<Long> ids = Arrays.stream(postSongsIds.split(",")).map(Long::parseLong).collect(Collectors.toList());
             List<Long> existingIds = songService.removeNonExistentIds(ids);
-            if(existingIds.size() == 0) return "redirect:/addPost";
+            if(existingIds.size() == 0) {
+                if(description != null)
+                    return "redirect:/addPost?description="+description;
+                else return "redirect:/addPost";
+            }
             if(ids.size() == existingIds.size()){
-                ArrayList<Song> postSongs = (ArrayList<Song>) ids.stream().map(id -> {
-                    try {
-                        return songService.getSongById(id);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }).collect(Collectors.toList());
+                ArrayList<Song> postSongs = null;
+                try {
+                    postSongs = (ArrayList<Song>) songService.getSongsByIds(ids);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if(description != null){
+                    model.addAttribute("description", description);
+                }
                 model.addAttribute("postSongs", postSongs);
             }else{
                 String urlIds = Utils.idListToString(existingIds);
                 System.out.println(urlIds);
-                return "redirect:/addPost/"+urlIds;
+                if(description != null){
+                    return "redirect:/addPost?postSongsIds="+urlIds+"&description="+description;
+                }
+                else return "redirect:/addPost?postSongsIds="+urlIds;
+            }
+        }else {
+            if(description != null){
+                model.addAttribute("description", description);
             }
         }
+
         model.addAttribute("appName",appName);
         model.addAttribute("songs",songService.getAll());
         model.addAttribute("artists", artistService.getAll());
         model.addAttribute("posts", postService.getAll());
         return "addPostPage";
     }
-
 
 }

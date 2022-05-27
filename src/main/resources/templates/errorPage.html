@@ -10,8 +10,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-
-    <h1>Error</h1>
+    <h1>Error page</h1>
+    <h4 th:if="${notification}" th:text="${notification}"></h4>
+    <br>
+    <h4 th:if="${error}" th:text="${error}"></h4>
 
 </body>
 </html>

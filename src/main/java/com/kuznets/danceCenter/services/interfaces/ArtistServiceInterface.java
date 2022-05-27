@@ -3,22 +3,15 @@ package com.kuznets.danceCenter.services.interfaces;
 import com.kuznets.danceCenter.models.Artist;
 import com.kuznets.danceCenter.models.Song;
 
-import java.util.Set;
-
+import java.util.List;
 
 public interface ArtistServiceInterface {
 
-    boolean addArtist(String name, Set<Song> songs);
-//    Song addArtist(Artist artist);
+    Artist addArtist(String name, List<Song> songs);
 
     boolean artistExistsById(Long id);
-
-    boolean deleteArtist(Long id);
-
-//    boolean updateArtist(Long id, String newName);
-//    boolean updateArtist(Long id, String newName, Set<Artist> artists);
-//    Teacher updateTeacher(Teacher teacher);
-
     Artist getArtistById(Long id) throws Exception;
     Iterable<Artist> getAll();
+
+    boolean deleteArtist(Long id);
 }

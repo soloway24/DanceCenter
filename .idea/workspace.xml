@@ -4,17 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d0289d5a-5e23-428f-b02b-26e97fd1ccea" name="Default Changelist" comment="Added endpoint &quot;songs/update&quot; and song update method in service.&#10;Added edit modal window and buttons for songs in addPostPage.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/utils/Utils.java" afterDir="false" />
+    <list default="true" id="d0289d5a-5e23-428f-b02b-26e97fd1ccea" name="Default Changelist" comment="Finished &quot;posts/add&quot; endpoint.&#10;Added post addition.&#10;Some methods are moved to Utils.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/MyErrorController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/exceptions/ArtistNotFoundException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/ArtistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/ArtistController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/MainController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/PostController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/SongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/SongController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Artist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Artist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Song.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Song.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/ArtistService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/ArtistService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/PostService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/SongService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/SongService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/ArtistServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/ArtistServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/PostServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/PostServiceInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/SongServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/SongServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/js/addPost.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/js/addPost.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/js/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/addPostPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/addPostPage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/errorPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/errorPage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/mainPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/mainPage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,10 +141,13 @@
       <recent name="D:\IJ IDEA workspace\danceCenter\src\main\resources\static" />
       <recent name="D:\IJ IDEA workspace\danceCenter\src\main\resources\templates" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.kuznets.danceCenter" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.kuznets.danceCenter.services.interfaces" />
       <recent name="com.kuznets.danceCenter.controllers" />
       <recent name="com.kuznets.danceCenter.exceptions" />
+      <recent name="com.kuznets.danceCenter.services.interfaces" />
       <recent name="com.kuznets.danceCenter.services.implementations" />
       <recent name="com.kuznets.danceCenter.repositories" />
     </key>
@@ -266,7 +282,10 @@
       <workItem from="1653309351723" duration="14475000" />
       <workItem from="1653387463578" duration="8069000" />
       <workItem from="1653413820953" duration="7648000" />
-      <workItem from="1653467819851" duration="23945000" />
+      <workItem from="1653467819851" duration="24797000" />
+      <workItem from="1653560615926" duration="19535000" />
+      <workItem from="1653601491013" duration="790000" />
+      <workItem from="1653647757132" duration="14854000" />
     </task>
     <task id="LOCAL-00001" summary="First commit. &#10;Implemented mvc pattern with main models, repositories, services, controllers. Connected PostgreSQL database. Added simple visualization in html with Thymeleaf.">
       <created>1647028928494</created>
@@ -317,7 +336,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653494704580</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Finished &quot;posts/add&quot; endpoint.&#10;Added post addition.&#10;Some methods are moved to Utils.">
+      <created>1653510277325</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1653510277325</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -350,9 +376,29 @@
     <MESSAGE value="Completed automatic tag info retrieving when uploading a file.&#10;Added changes to field visibility in adding song form.&#10;Changed Song attribute &quot;name&quot; to &quot;title&quot;." />
     <MESSAGE value="Added addPost page and controller method for &quot;/addPost&quot;.&#10;Added addPost.js file.&#10;Added multiple tag info retrieval for songs.&#10;Added multiple addition of songs." />
     <MESSAGE value="Added endpoint &quot;songs/update&quot; and song update method in service.&#10;Added edit modal window and buttons for songs in addPostPage." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added endpoint &quot;songs/update&quot; and song update method in service.&#10;Added edit modal window and buttons for songs in addPostPage." />
+    <MESSAGE value="Finished &quot;posts/add&quot; endpoint.&#10;Added post addition.&#10;Some methods are moved to Utils." />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished &quot;posts/add&quot; endpoint.&#10;Added post addition.&#10;Some methods are moved to Utils." />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/SongService.java</url>
+          <line>89</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/SongController.java</url>
+          <line>178</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/SongController.java</url>
+          <line>219</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="SpringBootApplicationConfigurationType">
         <watch expression="((Artist)artistSet.toArray()[0]).name" custom="com.kuznets.danceCenter.models.Artist" />

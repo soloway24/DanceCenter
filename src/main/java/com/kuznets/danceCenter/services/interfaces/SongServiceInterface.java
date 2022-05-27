@@ -5,29 +5,22 @@ import com.kuznets.danceCenter.models.Song;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 
 public interface SongServiceInterface {
+    Song addSong(String title, List<String> artists, MultipartFile file) throws Exception;
 
-    Optional<Song> addSong(String title, Set<String> artists, MultipartFile file);
-    boolean updateSong(Long id, String title, Set<String> artists);
+    Song updateSong(Long id, String title, List<String> artists) throws Exception;
 
     boolean songExistsById(Long id);
-    boolean deleteSong(Long id);
+    Song getSongById(Long id) throws Exception;
+    List<Song> getSongsByIds(List<Long> ids) throws Exception;
+    Iterable<Song> getAll();
 
-    boolean deleteSongsByIds(List<Long> ids);
-
+    void deleteSongById(Long id) throws Exception;
+    void deleteSongsByIds(List<Long> ids) throws Exception;
     void deleteAll();
 
     List<Long> removeNonExistentIds(List<Long> ids);
-    Set<Artist> createArtistsFromStrings(Set<String> artists);
-
-//    boolean updateSong(Long id, String newName);
-//    boolean updateSong(Long id, String newName, Set<artist> artists);
-//    Teacher updateTeacher(Teacher teacher);
-
-    Song getSongById(Long id) throws Exception;
-    Iterable<Song> getAll();
+    List<Artist> createArtistsFromStrings(List<String> artists);
 }

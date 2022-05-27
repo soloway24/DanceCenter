@@ -7,17 +7,16 @@ import com.kuznets.danceCenter.repositories.ArtistRepository;
 import com.kuznets.danceCenter.repositories.SongRepository;
 import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
 import com.kuznets.danceCenter.utils.Values;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class SongService implements SongServiceInterface {
@@ -26,93 +25,75 @@ public class SongService implements SongServiceInterface {
     private ArtistRepository artistRepository;
 
 
-    private static Logger logger = LogManager.getLogger(SongService.class);
-
     @Autowired
-    public void setTeacherRepository(SongRepository songRepository, ArtistRepository artistRepository) {
+    public void setRepositories(SongRepository songRepository, ArtistRepository artistRepository) {
         this.songRepository = songRepository;
         this.artistRepository = artistRepository;
     }
 
 
-
     @Override
-    public Optional<Song> addSong(@NotNull String title, @Null Set<String> artists, @NotNull MultipartFile file) {
-        if(title.isEmpty()) {
-            //log
-            return Optional.empty();
-        }
+    public Song addSong(@NotNull String title, List<String> artists, @NotNull MultipartFile file) throws IOException, ResponseStatusException {
+        if(file.getOriginalFilename().isEmpty())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot add a song with an empty audio file.");
+        String songTitle = "";
+        if(title.isEmpty())
+            songTitle = file.getOriginalFilename().substring(0, file.getOriginalFilename().lastIndexOf("."));
+        else
+            songTitle = title;
 
-        if(!file.getOriginalFilename().isEmpty())
-        {
-            // create file upload directory if it doesn't exist
-            File uploadPath = new File(Values.UPLOAD_PATH);
-            if(!uploadPath.exists())
-                uploadPath.mkdir();
+        Song createdSong;
+        String location = "";
+        if(artists != null) {
+            List<Artist> artistSet = createArtistsFromStrings(artists);
+            createdSong = songRepository.save(new Song(songTitle, artistSet, location));
+        } else
+            createdSong = songRepository.save(new Song(songTitle, location));
 
-            // create unique title for file using uuid to avoid collisions
-            String uuid = UUID.randomUUID().toString();
-            String fileName = uuid + "." + file.getOriginalFilename();
-            fileName = fileName.replaceAll(" ", "_");
-            File newFile = new File(uploadPath.getAbsolutePath(), fileName);
+        // create file upload directory if it doesn't exist
+        File uploadPath = new File(Values.UPLOAD_PATH);
+        if(!uploadPath.exists())
+            uploadPath.mkdir();
 
-            // write multipart file to file on disk
-            try {
-                file.transferTo(newFile);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        // create unique title for file using uuid to avoid collisions
+        String uuid = UUID.randomUUID().toString();
+        String fileName = uuid + "." + createdSong.getId();
+//        fileName = fileName.replaceAll(" ", "_");
+        File newFile = new File(uploadPath.getAbsolutePath(), fileName);
 
-            String location = Values.BEGIN_FILE_LOCATION + fileName;
-
-            Song createdSong;
-            if(artists != null)
-            {
-                Set<Artist> artistSet = createArtistsFromStrings(artists);
-                // create Song instance and add it to repository
-                createdSong = songRepository.save(new Song(title, artistSet, location));
-            } else
-                // create Song instance and add it to repository
-                createdSong = songRepository.save(new Song(title, location));
-            return Optional.of(createdSong);
-        }
-        return Optional.empty();
+        // write multipart file to file on disk
+        file.transferTo(newFile);
+        location = Values.BEGIN_FILE_LOCATION + fileName;
+        createdSong.setLocation(location);
+        return songRepository.save(createdSong);
     }
 
     @Override
-    public Set<Artist> createArtistsFromStrings(Set<String> artists) {
-        Set<Artist> artistSet = new HashSet<>();
+    public List<Artist> createArtistsFromStrings(List<String> artists) {
+        List<Artist> artistList = new ArrayList<>();
+        if(artists == null)
+            return artistList;
         for (String artist : artists) {
             if(artistRepository.existsByName(artist)){
-                artistSet.add(artistRepository.findByName(artist).iterator().next());
+                artistList.add(artistRepository.findByName(artist).iterator().next());
             }else
             {
                 Artist curArtist = artistRepository.save(new Artist(artist));
-                artistSet.add(curArtist);
+                artistList.add(curArtist);
             }
         }
-        return artistSet;
+        return artistList;
     }
 
     @Override
-    public boolean updateSong(@NotNull Long id, @NotNull String title, @NotNull Set<String> artists) {
-        try {
-            Song song = songRepository.findById(id).orElseThrow();
-            song.setTitle(title);
-            song.setArtists(createArtistsFromStrings(artists));
-            songRepository.save(song);
-        } catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+    public Song updateSong(@NotNull Long id, @NotNull String title, List<String> artists) throws SongNotFoundException {
+        Song song = getSongById(id);
+        song.setTitle(title);
+        song.setArtists(createArtistsFromStrings(artists));
+        return songRepository.save(song);
     }
 
-    @Override
-    public boolean songExistsById(Long id)
-    {
-        return songRepository.existsById(id);
-    }
+
 
     @Override
     public List<Long> removeNonExistentIds(List<Long> ids) {
@@ -123,45 +104,55 @@ public class SongService implements SongServiceInterface {
         return existingIds;
     }
 
-
-
     @Override
-    public boolean deleteSong(Long id) {
-        if(!songExistsById(id)) throw new SongNotFoundException(id);
-        try {
-
-            File uploadPath = new File(Values.UPLOAD_PATH);
-            if(!uploadPath.exists())
-                throw new Exception("Upload folder doesn't exist.");
-
-            File file = new File(uploadPath.getAbsolutePath() + "/" + getSongById(id).getLocation().substring(Values.BEGIN_FILE_LOCATION.length()));
-            file.delete();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        songRepository.deleteById(id);
-        return true;
+    public boolean songExistsById(Long id) {
+        return songRepository.existsById(id);
     }
 
     @Override
-    public boolean deleteSongsByIds(List<Long> ids) {
-        for(Long id : ids)
-            deleteSong(id);
-        return true;
-    }
-
-    @Override
-    public void deleteAll() {
-        songRepository.deleteAll();
-    }
-
-    @Override
-    public Song getSongById(Long id) throws Exception {
+    public Song getSongById(Long id) throws SongNotFoundException {
         return songRepository.findById(id).orElseThrow(() -> new SongNotFoundException(id));
+    }
+
+    @Override
+    public List<Song> getSongsByIds(List<Long> ids) throws Exception {
+        List<Song> songs = new ArrayList<>();
+        for(Long id : ids)
+            songs.add(getSongById(id));
+        return songs;
     }
 
     @Override
     public Iterable<Song> getAll() {
         return songRepository.findAll();
+    }
+
+    @Override
+    public void deleteSongById(Long id) throws Exception {
+        if(!songExistsById(id)) throw new SongNotFoundException(id);
+
+        File uploadPath = new File(Values.UPLOAD_PATH);
+        if(!uploadPath.exists())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Upload folder doesn't exist.");
+
+        File file = new File(uploadPath.getAbsolutePath() + "/"
+                + getSongById(id).getLocation().substring(Values.BEGIN_FILE_LOCATION.length()));
+        boolean fileDeleted = file.delete();
+
+        if(!fileDeleted)
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"File was not deleted.");
+
+        songRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteSongsByIds(List<Long> ids) throws Exception {
+        for(Long id : ids)
+            deleteSongById(id);
+    }
+
+    @Override
+    public void deleteAll() {
+        songRepository.deleteAll();
     }
 }

@@ -6,8 +6,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 public class Artist {
@@ -23,7 +24,7 @@ public class Artist {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     @NotNull
-    private Set<Song> songs = new HashSet<>();
+    private List<Song> songs = new ArrayList<>();
 
 
     public Artist(String name) {
@@ -33,7 +34,7 @@ public class Artist {
     public Artist() {
     }
 
-    public Artist(String name, Set<Song> songs) {
+    public Artist(String name, List<Song> songs) {
         this.name = name;
         this.songs = songs;
     }
@@ -55,11 +56,11 @@ public class Artist {
         this.name = name;
     }
 
-    public Set<Song> getSongs() {
+    public List<Song> getSongs() {
         return songs;
     }
 
-    public void setSongs(Set<Song> songs) {
+    public void setSongs(List<Song> songs) {
         this.songs = songs;
     }
 }

@@ -5,7 +5,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,7 +29,7 @@ public class Post {
             joinColumns = @JoinColumn(name = "post_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "song_id", nullable = false))
     @NotNull
-    private Set<Song> songs = new HashSet<>();
+    private List<Song> songs = new ArrayList<>();
 
 
     public Post(String description) {
@@ -42,7 +44,7 @@ public class Post {
     public Post() {
     }
 
-    public Post(String description, Set<Song> songs) {
+    public Post(String description, List<Song> songs) {
         this.description = description;
         this.songs = songs;
     }
@@ -86,11 +88,11 @@ public class Post {
         this.description = name;
     }
 
-    public Set<Song> getSongs() {
+    public List<Song> getSongs() {
         return songs;
     }
 
-    public void setSongs(Set<Song> songs) {
+    public void setSongs(List<Song> songs) {
         this.songs = songs;
     }
 }

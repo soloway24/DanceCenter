@@ -6,8 +6,7 @@ import com.kuznets.danceCenter.services.implementations.ArtistService;
 import com.kuznets.danceCenter.services.implementations.SongService;
 import com.kuznets.danceCenter.services.interfaces.ArtistServiceInterface;
 import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.kuznets.danceCenter.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/artists")
@@ -28,8 +29,6 @@ public class ArtistController {
     private SongServiceInterface songService;
 
 
-    private static Logger logger = LogManager.getLogger(ArtistController.class);
-
     @Autowired
     public ArtistController(ArtistService artistService, SongService songService) {
         this.artistService = artistService;
@@ -37,25 +36,59 @@ public class ArtistController {
     }
 
     @PostMapping("/add")
-    public RedirectView addArtist(@RequestParam String name, @RequestParam Set<Song> songs, RedirectAttributes redir){
-        RedirectView redirectView= new RedirectView("/",true);
-        String notification = "Виконавець '"+ name +"' був успішно доданий!";
-        boolean success =  artistService.addArtist(name, songs);
-// logging
+    public RedirectView addArtist(@RequestParam Long id, @RequestParam String name,
+                                   @RequestParam(name = "songIds") String songsIdsUnparsed,
+                                   HttpServletRequest request, RedirectAttributes redir) {
+
+        List<Long> ids = Utils.stringToIdList(songsIdsUnparsed);
+        String notification;
+        boolean success;
+        try {
+            List<Song> songs = songService.getSongsByIds(ids);
+            artistService.addArtist(name, songs);
+            notification = "Виконавець '"+ name +"' був успішно оновлений!";
+            success = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            notification = "Виконавець '"+ name +"' не був оновлений!";
+            success = false;
+        }
+        String referer = request.getHeader("Referer");
         redir.addFlashAttribute("success", success);
         redir.addFlashAttribute("notification", notification);
-        return redirectView;
+        return new RedirectView(referer,true);
     }
 
 //    @PostMapping("/update")
-//    public RedirectView editArtist(@RequestParam Long id, @RequestParam String name, @RequestParam Set<Song> songs, RedirectAttributes redir){
-//        RedirectView redirectView = new RedirectView("/",true);
-//        String notification = "Виконавець '"+ name +"' був успішно доданий!";
-//        boolean success =  artistService.addArtist(name, songs);
-//// logging
+//    public RedirectView updateArtist(@RequestParam Long id, @RequestParam String name,
+//                                   @RequestParam(name = "songIds") String songsIdsUnparsed,
+//                                   HttpServletRequest request, RedirectAttributes redir) {
+//
+//        List<Long> ids = Utils.stringToIdList(songsIdsUnparsed);
+//        List<Song> songs = new ArrayList<>();
+//        for(Long sid : ids){
+//            try{
+//                Song song = songService.getSongById(sid);
+//                songs.add(song);
+//            }catch (Exception e){
+//                e.printStackTrace();
+//            }
+//        }
+//        String notification;
+//        boolean success;
+//        try {
+//            artistService.addArtist(name, songs);
+//            notification = "Виконавець '"+ name +"' був успішно оновлений!";
+//            success = true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            notification = "Виконавець '"+ name +"' не був оновлений!";
+//            success = false;
+//        }
+//        String referer = request.getHeader("Referer");
 //        redir.addFlashAttribute("success", success);
 //        redir.addFlashAttribute("notification", notification);
-//        return redirectView;
+//        return new RedirectView(referer,true);
 //    }
 
     @PostMapping("/delete")
@@ -67,7 +100,6 @@ public class ArtistController {
         String notification = "Виконавець '"+ name +"' був успішно видалений!";
 
         boolean success =  artistService.deleteArtist(id);
-//logging
         redir.addFlashAttribute("success", success);
         redir.addFlashAttribute("notification", notification);
         return redirectView;

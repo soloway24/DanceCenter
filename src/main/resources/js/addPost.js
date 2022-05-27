@@ -1,10 +1,9 @@
-let addSongTitleField = document.getElementById("addSongTitleField");
 let loadFileInput = document.getElementById("loadFileInput");
 
 let editPostDescriptionInput = document.getElementById("editPostDescriptionInput");
 let editSongTitleInput = document.getElementById("editSongTitleInput");
 
-let artistInputField = document.getElementById("artistInputField");
+let editSongArtistInput = document.getElementById("editSongArtistInput");
 let editedArtistList = document.getElementById("editedArtistList");
 let editSongForm = document.getElementById("editSongForm");
 
@@ -13,9 +12,14 @@ let resetPostBtn = document.getElementById("resetPostBtn");
 
 addPostBtn.onclick = async function () {
     let description = editPostDescriptionInput.value;
-    if(!validatePost(description)) return;
-    let songIds = getIdsFromUrl(window.location.href);
+    let songIds = getParamFromUrl(window.location.href, "postSongsIds");
+    if(songIds === null){
+        alert("Post should contain at least 1 song.")
+        return;
+    }
     let formData = new FormData();
+    console.log(songIds);
+    console.log(JSON.stringify(songIds));
     formData.append("description", description);
     formData.append("songIds", JSON.stringify(songIds));
 
@@ -23,41 +27,41 @@ addPostBtn.onclick = async function () {
         method:"POST",
         body: formData
     });
-    window.location.href = "/";
-
+    if(addPostResponse.ok)
+        window.location.href = addPostResponse.url;
+    else
+        window.location.href = "/errors/addPost";
 }
 
 resetPostBtn.onclick = async function () {
     resetPostDescription();
     resetLoadFileInput();
 
-    if(window.location.href.substring(window.location.href.length - 7) !== "addPost"){
-        let idsArray = getIdsFromUrl(window.location.href);
-       await fetch("/songs/multipleDelete",
-            {method:"POST",
+    let idsStr = getParamFromUrl(window.location.href, "postSongsIds");
+    let redirectUrl;
+    if(idsStr != null) {
+        let idsArray = getIdsFromString(idsStr);
+        let deleteResponse = await fetch("/songs/multipleDelete",
+            {
+                method:"POST",
                 body: JSON.stringify(idsArray)
-        });
-        window.location.href = "/addPost";
-    }
-
-
-
+            });
+        redirectUrl = deleteResponse.url;
+    } else
+        redirectUrl = "/addPost";
+    window.location.href = redirectUrl;
 }
 
-function getIdsFromUrl(url) {
-    let parts = url.split('/');
-    let idsStr = "";
-    for(let i = 0; i < parts.length; i++){
-        if(parts[i]==="addPost" && i+1 < parts.length){
-            idsStr = parts[i+1];
-            break;
-        }
-    }
-    if(idsStr.length > 0){
-        let idArrayStr = idsStr.split(',');
-        return idArrayStr.map(s => +s);
-    }
-    return undefined;
+function getIdsFromString(strIds) {
+    let idArrayStr = strIds.split(',');
+    return idArrayStr.map(s => +s);
+}
+
+function getParamFromUrl(urlString, paramName) {
+    let url = new URL(urlString);
+    let resStr = url.searchParams.get(paramName);
+
+    return resStr;
 }
 
 editSongForm.onsubmit = function (e) {
@@ -68,17 +72,7 @@ editSongForm.onsubmit = function (e) {
         e.preventDefault();
     }
 }
-function validatePost(description) {
-    if (description === null || description === undefined) {
-        alert("Post description is not set.");
-        return false;
-    }
-    if (!/\S/.test(description)) {
-        alert("Post description is blank.");
-        return false;
-    }
-    return true;
-}
+
 function validateSong(title, artists) {
     if (title === null || title === undefined) {
         alert("Song title is not set.");
@@ -103,10 +97,14 @@ $('#editSongModal').on('show.bs.modal', function (event) {
     let id = button.data('song_id');
     let title = button.data('song_title');
     let artists = button.data('song_artists');
-    artists = artists.substring(1, artists.length - 1).split(',');
+    if(artists.length === 0)
+        artists = [];
+    else
+        artists = artists.substring(1, artists.length - 1).split(',');
     console.log(id);
     console.log(title);
     console.log(artists);
+    console.log(typeof artists);
     let modal = $(this);
     modal.find('#editSongTitleInput').val(title);
     modal.find('#editedSongIdInput').val(id);
@@ -118,85 +116,86 @@ function resetEditedArtistList() {
     editedArtistList.innerHTML = "";
 }
 
+function getValueFromInputById(id) {
+    let input = document.getElementById(id);
+    return input.value;
+}
+
 loadFileInput.onchange = async function () {
 
     const nFiles = loadFileInput.files.length;
-    if(nFiles < 1){
-        alert("Choose at least 1 file");
-        e.preventDefault();
-        return;
-    }
 
     let formData = new FormData();
     for(let i = 0; i < nFiles; i++){
         formData.append("files", loadFileInput.files[i]);
     }
 
-    let getFileTagsResponse = await fetch("/songs/multipleFileInfo", {
+    let tagList;
+    let fileInfoSuccess = true;
+    await fetch("/songs/multipleFileInfo", {
         method: "POST",
         body: formData,
-    });
-    let tagList;
-    await getFileTagsResponse.json().then(res => { tagList = res; });
+    })
+        .then(res => res.json())
+        .then(data => tagList = data)
+        .catch(() => {
+            window.location.href = "/errors/fileInfo";
+            fileInfoSuccess = false;
+        });
 
-    let titles = [];
-    let artists = [];
-    for(let i = 0; i < nFiles; i++){
-        titles.push(tagList[i].TITLE);
-        const songArtists = tagList[i].ARTIST.split('/');
-        artists.push(songArtists);
-    }
-    formData.append("titles", JSON.stringify(titles));
-    formData.append("artists", JSON.stringify(artists));
-
-    let addSongsResponse = await fetch("/songs/multipleAdd", {
-                method: "POST",
-                body: formData
+    if(fileInfoSuccess) {
+        let titles = [];
+        let artists = [];
+        for(let i = 0; i < nFiles; i++){
+            titles.push(tagList[i].TITLE);
+            const songArtists = tagList[i].ARTIST.split('/');
+            artists.push(songArtists);
+        }
+        formData.append("titles", JSON.stringify(titles));
+        formData.append("artists", JSON.stringify(artists));
+        let addedIdsJson;
+        let success = true;
+        await fetch("/songs/multipleAdd", {
+            method: "POST",
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => addedIdsJson = data)
+            .catch(() => {
+                window.location.href = "/errors/addSong";
+                success = false;
             });
-    let addedIdsJson = await addSongsResponse.json();
-    let addedIds = JSON.stringify(addedIdsJson);
-    addedIds = addedIds.substring(1, addedIds.length - 1);
+        console.log(addedIdsJson);
+        resetLoadFileInput();
+        if(success) {
+            let addedIds = JSON.stringify(addedIdsJson);
+            addedIds = addedIds.substring(1, addedIds.length - 1);
 
-    resetLoadFileInput();
-
-    if(window.location.href.substring(window.location.href.length - 7) === "addPost")
-        window.location.href = "/addPost/" + addedIds;
-    else
-        window.location.href = window.location.href + ',' + addedIds;
-
+            let desc = editPostDescriptionInput.value;
+            let postSongsIdsStr = getParamFromUrl(window.location.href, "postSongsIds");
+            if(postSongsIdsStr != null) {
+                let newIds = postSongsIdsStr + ',' + addedIds;
+                if(!/\S/.test(desc)) //desc is blank
+                    window.location.href = "/addPost?postSongsIds=" + newIds;
+                else
+                    window.location.href = "/addPost?postSongsIds=" + newIds + "&description=" + desc;
+            } else {
+                if(!/\S/.test(desc)) //desc is blank
+                    window.location.href = "/addPost?postSongsIds=" + addedIds;
+                else
+                    window.location.href = "/addPost?postSongsIds=" + addedIds + "&description=" + desc;
+            }
+        }
+    }
 }
 
 function resetLoadFileInput() {loadFileInput.value = ""; }
 function resetPostDescription() {editPostDescriptionInput = ""; }
 
-
-const editTitleInputPrefix = "editTitleInput";
-const editTitleDivPrefix = "editTitleDiv";
-const editArtistsDivPrefix = "editArtistsDiv";
-const editArtistsInputDivPrefix = "editArtistsInputDiv";
-const addArtistInputPrefix = "addArtistInput";
-const addArtistButtonPrefix = "addArtistButton";
-const artistListDivPrefix = "artistListDiv";
-
-
-function setAddSongTitleField(title) {
-    if (title === null || title === undefined) {
-        console.error("Song title is not set.");
-        return;
-    }
-    if (!/\S/.test(title)) {
-        console.error("Song title is blank.");
-        return;
-    }
-    addSongTitleField.value = title;
-}
-
-
 function addArtistFromInput(artistInput, artistList) {
     addArtistToList(artistInput.value, artistList);
     artistInput.value = "";
 }
-
 
 function addArtistToList(artist, artistList) {
     console.log("Adding artist: " + artist);

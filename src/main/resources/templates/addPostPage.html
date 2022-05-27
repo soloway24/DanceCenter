@@ -23,17 +23,12 @@
 
             <div class="form-group" id="postDescAddDiv">
                 <label>Description:</label>
-                <input type="text" class="form-control" name="description" id="editPostDescriptionInput">
+                <input type="text" class="form-control" name="description"
+                       id="editPostDescriptionInput" th:value="${description}">
             </div>
 
-<!--            <div th:if="${notifications}">-->
-<!--                <p  th:each="notif : ${notifications}" th:text="${notif}"></p>-->
-<!--            </div>-->
-
-
-
             <div id="addedSongsDiv">
-                <h4>Added songs</h4>
+                <h4>Songs</h4>
                 <table th:if="${postSongs}" border="1px">
                     <tr th:each="song : ${postSongs}">
                         <td th:text="${song.id}"></td>
@@ -91,9 +86,9 @@
 
                             </div>
                             <div class="form-group">
-                                <label for="artistInputField" class="form-group-label">Add artist:</label>
-                                <input type="text" id="artistInputField">
-                                <button type="button" class="btn btn-primary" onclick="addArtistFromInput(artistInputField, editedArtistList)">Add</button>
+                                <label for="editSongArtistInput" class="form-group-label">Add artist:</label>
+                                <input type="text" id="editSongArtistInput">
+                                <button type="button" class="btn btn-primary" onclick="addArtistFromInput(editSongArtistInput, editedArtistList)">Add</button>
                             </div>
                         </div>
                     </div>
