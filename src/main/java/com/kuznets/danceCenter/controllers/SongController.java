@@ -16,6 +16,7 @@ import org.json.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -37,6 +38,12 @@ public class SongController {
     @Autowired
     public SongController(SongServiceInterface songService) {
         this.songService = songService;
+    }
+
+    @GetMapping
+    public String songs(Model model) {
+        model.addAttribute("songs",songService.getAll());
+        return "songs";
     }
 
     @PostMapping("/multipleAdd")

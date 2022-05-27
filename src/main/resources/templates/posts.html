@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${appName}"></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+
+    <div th:replace="header :: header"></div>
+
+    <main class="container">
+
+        <div class="my-3 p-3 bg-body rounded shadow" th:each="post : ${posts}">
+            <h6 class="border-bottom pb-2 mb-3">Username</h6>
+            <p th:text="${post.description}"></p>
+            <div class="d-flex text-muted mb-3" th:each="song: ${post.songs}">
+<!--                <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32"-->
+<!--                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"-->
+<!--                     preserveAspectRatio="xMidYMid slice" focusable="false">-->
+<!--                    <title>Placeholder</title>-->
+<!--                    <rect width="100%" height="100%" fill="#007bff"></rect>-->
+<!--                    <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>-->
+<!--                </svg>-->
+                <div class="container">
+                    <p class="pb-3 pt-3 mb-0 small lh-sm border-top">
+                        <strong class="text-gray-dark" th:text="${song.title}"></strong><strong class="text-gray-dark" th:text="' - '+${song.artists}"></strong>
+                    </p>
+                    <audio controls th:src="${song.location}"></audio>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

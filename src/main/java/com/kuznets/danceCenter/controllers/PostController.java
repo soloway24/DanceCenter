@@ -6,6 +6,8 @@ import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
 import com.kuznets.danceCenter.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +30,14 @@ public class PostController {
         this.postService = postService;
         this.songService = songService;
     }
+
+    @GetMapping
+    public String posts(Model model) {
+        model.addAttribute("songs",songService.getAll());
+        model.addAttribute("posts", postService.getAll());
+        return "posts";
+    }
+
 
     @PostMapping("/add")
     public RedirectView addPost(@RequestParam String description, @RequestParam("songIds") String songsIdsUnparsed, RedirectAttributes redir){

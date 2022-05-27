@@ -10,6 +10,7 @@ import com.kuznets.danceCenter.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +29,12 @@ public class ArtistController {
     private ArtistServiceInterface artistService;
     private SongServiceInterface songService;
 
+    @GetMapping
+    public String artists(Model model) {
+        model.addAttribute("songs",songService.getAll());
+        model.addAttribute("artists", artistService.getAll());
+        return "artists";
+    }
 
     @Autowired
     public ArtistController(ArtistService artistService, SongService songService) {

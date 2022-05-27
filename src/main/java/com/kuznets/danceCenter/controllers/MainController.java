@@ -41,6 +41,16 @@ public class MainController {
         return "mainPage";
     }
 
+    @GetMapping("/header")
+    public String header(){
+        return "header";
+    }
+
+    @GetMapping("/about")
+    public String about(){
+        return "about";
+    }
+
     @GetMapping("/addPost")
     public String addPostPage(Model model, @RequestParam(name = "postSongsIds", required = false) String postSongsIds,
                               @RequestParam(name = "description", required = false) String description, RedirectAttributes redir){
