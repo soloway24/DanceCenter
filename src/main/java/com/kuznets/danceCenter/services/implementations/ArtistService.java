@@ -26,7 +26,7 @@ public class ArtistService implements ArtistServiceInterface {
 
     @Override
     public Artist addArtist(@NotNull String name, @NotNull List<Song> songs) {
-        if(name.isEmpty())
+        if(name.isEmpty() || name.isBlank())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot add artists with an empty name.");
         return artistRepository.save(new Artist(name, songs));
     }

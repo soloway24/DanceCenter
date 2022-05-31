@@ -1,5 +1,8 @@
 package com.kuznets.danceCenter.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -11,6 +14,8 @@ import java.util.List;
 
 
 @Entity
+@Data
+@NoArgsConstructor
 public class Artist {
 
     @Id
@@ -31,9 +36,6 @@ public class Artist {
         this.name = name;
     }
 
-    public Artist() {
-    }
-
     public Artist(String name, List<Song> songs) {
         this.name = name;
         this.songs = songs;
@@ -44,23 +46,4 @@ public class Artist {
         return name;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Song> getSongs() {
-        return songs;
-    }
-
-    public void setSongs(List<Song> songs) {
-        this.songs = songs;
-    }
 }

@@ -1,16 +1,16 @@
 package com.kuznets.danceCenter.models;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-@Entity
+@Entity @Data @NoArgsConstructor
 public class Post {
 
     @Id
@@ -31,36 +31,24 @@ public class Post {
     @NotNull
     private List<Song> songs = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private AppUser appUser;
 
     public Post(String description) {
         this.description = description;
     }
 
-    public Post(Long id, String description) {
-        this.id = id;
-        this.description = description;
-    }
-
-    public Post() {
-    }
 
     public Post(String description, List<Song> songs) {
         this.description = description;
         this.songs = songs;
     }
 
-    public void addSong(Song song)
-    {
-        //check
-        songs.add(song);
-        song.getPosts().add(this);
-    }
-
-    public void removeartist(Song song)
-    {
-        //check
-        songs.remove(song);
-        song.getPosts().remove(this);
+    public Post(String description, List<Song> songs, AppUser user) {
+        this.description = description;
+        this.songs = songs;
+        this.appUser = user;
     }
 
 //    @Override
@@ -76,23 +64,4 @@ public class Post {
         return description;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String name) {
-        this.description = name;
-    }
-
-    public List<Song> getSongs() {
-        return songs;
-    }
-
-    public void setSongs(List<Song> songs) {
-        this.songs = songs;
-    }
 }

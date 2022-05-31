@@ -24,6 +24,12 @@ public class MyErrorController implements ErrorController {
         return "errorPage";
     }
 
+    @GetMapping("/follow")
+    public String errorFollow(Model model){
+        model.addAttribute("notification", "Cannot follow the user. It may not exist.");
+        return "errorPage";
+    }
+
     @GetMapping("/delete")
     public String errorDelete(Model model){
         model.addAttribute("notification", "Cannot delete song(songs). Song(songs) may not exist.");
@@ -37,9 +43,7 @@ public class MyErrorController implements ErrorController {
     }
 
     @GetMapping("/error")
-    public String errorPage(@RequestParam(name = "notification", required = false) String notification, Model model){
-        if(notification != null)
-            model.addAttribute("notification", notification);
+    public String errorPage(){
         return "errorPage";
     }
 

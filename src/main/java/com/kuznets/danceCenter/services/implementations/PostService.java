@@ -1,6 +1,7 @@
 package com.kuznets.danceCenter.services.implementations;
 
 import com.kuznets.danceCenter.exceptions.PostNotFoundException;
+import com.kuznets.danceCenter.models.AppUser;
 import com.kuznets.danceCenter.models.Post;
 import com.kuznets.danceCenter.models.Song;
 import com.kuznets.danceCenter.repositories.PostRepository;
@@ -22,8 +23,8 @@ public class PostService implements PostServiceInterface {
     }
 
     @Override
-    public Post addPost(@NotNull String description, @NotNull List<Song> songs) {
-        return postRepository.save(new Post(description, songs));
+    public Post addPost(@NotNull String description, @NotNull List<Song> songs, @NotNull AppUser user) {
+        return postRepository.save(new Post(description, songs, user));
     }
 
     @Override

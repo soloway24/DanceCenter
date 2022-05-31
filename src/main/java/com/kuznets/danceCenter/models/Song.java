@@ -1,5 +1,7 @@
 package com.kuznets.danceCenter.models;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -8,7 +10,8 @@ import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Entity
-@Table(name = "Song")
+@Data
+@NoArgsConstructor
 public class Song {
 
     @Id
@@ -38,9 +41,6 @@ public class Song {
     @NotNull
     private List<Post> posts = new ArrayList<>();
 
-    public Song() {
-    }
-
     public Song(String title, String location) {
         this.title = title;
         this.location = location;
@@ -66,39 +66,5 @@ public class Song {
         return title;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public List<Artist> getArtists() {
-        return artists;
-    }
-
-    public void setArtists(List<Artist> artists) {
-        this.artists = artists;
-    }
-
-    public List<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
 }

@@ -10,16 +10,11 @@
 </head>
 <body>
     <div th:replace="header :: header"></div>
-    <div class="container">
-        <header class="mb-5">
-            <h1 th:text="${appName}"></h1>
-        </header>
-    </div>
     <div class="container w-50">
         <p th:if="${notification}" th:text="${notification}"></p>
     </div>
     <div class="container w-50">
-        <h4>Add Post</h4>
+        <h5 class="border-bottom pb-2 mb-0">Add Post</h5>
 
             <div class="form-group" id="postDescAddDiv">
                 <label>Description:</label>
@@ -27,33 +22,50 @@
                        id="editPostDescriptionInput" th:value="${description}">
             </div>
 
-            <div id="addedSongsDiv">
-                <h4>Songs</h4>
-                <table th:if="${postSongs}" border="1px">
-                    <tr th:each="song : ${postSongs}">
-                        <td th:text="${song.id}"></td>
-                        <td th:text="${song.title}"></td>
-                        <td th:text="${song.artists}"></td>
-                        <input type="hidden" th:value="${song.location}">
-                        <td><audio controls th:src="'../'+${song.location}"></audio></td>
-                        <td>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editSongModal"
-                                    th:attr="data-song_id=${song.id},data-song_title=${song.title},data-song_artists=${song.artists}">Edit</button>
-                        </td>
-                        <td>
-                            <form action="../songs/delete/" method="post">
-                                <input name="id" type="hidden" th:value="${song.id}">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                </table>
+        <div class="my-3 p-3 bg-body rounded shadow">
+            <h6 class="border-bottom pb-2 mb-0">Songs</h6>
+            <div class="d-flex text-muted pt-3" th:each="song : ${postSongs}">
+                <div class="container">
+                    <p class="pb-3 pt-3 mb-0 small lh-sm border-top">
+                        <strong class="text-gray-dark" th:text="${song.title}"></strong><strong class="text-gray-dark" th:text="' - '+${song.artists}"></strong>
+                    </p>
+                    <audio controls th:src="'../'+${song.location}"></audio>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editSongModal"
+                            th:attr="data-song_id=${song.id},data-song_title=${song.title},data-song_artists=${song.artists}">Edit</button>
+                    <form action="../songs/delete/" method="post">
+                        <input name="id" type="hidden" th:value="${song.id}">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
             </div>
+        </div>
+
+<!--            <div>-->
+<!--                <h4>Songs</h4>-->
+<!--                <table th:if="${postSongs}" border="1px">-->
+<!--                    <tr th:each="song : ${postSongs}">-->
+<!--                        <td th:text="${song.id}"></td>-->
+<!--                        <td th:text="${song.title}"></td>-->
+<!--                        <td th:text="${song.artists}"></td>-->
+<!--                        <input type="hidden" th:value="${song.location}">-->
+<!--                        <td><audio controls th:src="'../'+${song.location}"></audio></td>-->
+<!--                        <td>-->
+<!--                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editSongModal"-->
+<!--                                    th:attr="data-song_id=${song.id},data-song_title=${song.title},data-song_artists=${song.artists}">Edit</button>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <form action="../songs/delete/" method="post">-->
+<!--                                <input name="id" type="hidden" th:value="${song.id}">-->
+<!--                                <button type="submit" class="btn btn-danger">Delete</button>-->
+<!--                            </form>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                </table>-->
+<!--            </div>-->
 
             <div id="addSongsDiv">
-                <h4>Add Songs</h4>
+                <h6 class="border-bottom pb-2 mb-0">Add Songs</h6>
                 <div class="input-group mt-3 mb-3">
-                    <label class="input-group-text" for="loadFileInput">Load files:</label>
                     <input type="file" class="form-control" name="file" id="loadFileInput" accept=".mp3,audio/*" multiple>
                 </div>
             </div>

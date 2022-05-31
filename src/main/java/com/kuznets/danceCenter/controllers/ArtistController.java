@@ -1,19 +1,22 @@
 package com.kuznets.danceCenter.controllers;
 
+import com.kuznets.danceCenter.models.AppUser;
 import com.kuznets.danceCenter.models.Artist;
 import com.kuznets.danceCenter.models.Song;
 import com.kuznets.danceCenter.services.implementations.ArtistService;
 import com.kuznets.danceCenter.services.implementations.SongService;
 import com.kuznets.danceCenter.services.interfaces.ArtistServiceInterface;
 import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
+import com.kuznets.danceCenter.services.interfaces.UserServiceInterface;
 import com.kuznets.danceCenter.utils.Utils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -25,21 +28,53 @@ import java.util.List;
 @RequestMapping("/artists")
 public class ArtistController {
 
-
     private ArtistServiceInterface artistService;
     private SongServiceInterface songService;
+    private UserServiceInterface userService;
+
+    @Autowired
+    public ArtistController(ArtistServiceInterface artistService, SongServiceInterface songService,
+                            UserServiceInterface userService) {
+        this.artistService = artistService;
+        this.songService = songService;
+        this.userService = userService;
+    }
+
+    private void populateModel(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        AppUser appUser = userService.getUserByUsername(user.getUsername());
+        model.addAttribute("artists", artistService.getAll());
+        model.addAttribute("currentUser", appUser);
+    }
+
+    private void addUserToModel(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        AppUser appUser = userService.getUserByUsername(user.getUsername());
+        model.addAttribute("currentUser", appUser);
+    }
+
 
     @GetMapping
     public String artists(Model model) {
-        model.addAttribute("songs",songService.getAll());
-        model.addAttribute("artists", artistService.getAll());
+        populateModel(model);
         return "artists";
     }
 
-    @Autowired
-    public ArtistController(ArtistService artistService, SongService songService) {
-        this.artistService = artistService;
-        this.songService = songService;
+    @GetMapping("/{artistId}")
+    public String artist(@PathVariable("artistId") Long artistId, Model model) {
+        try {
+            Artist artist = artistService.getArtistById(artistId);
+            ArrayList<Artist> artists = new ArrayList<>();
+            artists.add(artist);
+            model.addAttribute("artists", artists);
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "errorPage";
+        }
+        addUserToModel(model);
+        return "artists";
     }
 
     @PostMapping("/add")

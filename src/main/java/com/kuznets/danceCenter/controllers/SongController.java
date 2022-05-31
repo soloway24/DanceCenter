@@ -1,7 +1,9 @@
 package com.kuznets.danceCenter.controllers;
 
+import com.kuznets.danceCenter.models.AppUser;
 import com.kuznets.danceCenter.models.Song;
 import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
+import com.kuznets.danceCenter.services.interfaces.UserServiceInterface;
 import com.kuznets.danceCenter.utils.Utils;
 import com.kuznets.danceCenter.utils.Values;
 import org.jaudiotagger.audio.AudioFile;
@@ -15,6 +17,9 @@ import org.jaudiotagger.tag.TagException;
 import org.json.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,15 +39,25 @@ import java.util.stream.Collectors;
 public class SongController {
 
     private SongServiceInterface songService;
+    private UserServiceInterface userService;
 
     @Autowired
-    public SongController(SongServiceInterface songService) {
+    public SongController(SongServiceInterface songService, UserServiceInterface userService) {
         this.songService = songService;
+        this.userService = userService;
+    }
+
+    private void populateModel(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        AppUser appUser = userService.getUserByUsername(user.getUsername());
+        model.addAttribute("songs",songService.getAll());
+        model.addAttribute("currentUser", appUser);
     }
 
     @GetMapping
     public String songs(Model model) {
-        model.addAttribute("songs",songService.getAll());
+        populateModel(model);
         return "songs";
     }
 
@@ -52,6 +67,7 @@ public class SongController {
                                        @RequestParam(name = "files") MultipartFile[] files) throws Exception {
         JSONArray titlesJson = new JSONArray(titlesUnparsed);
         JSONArray artistListsJson = new JSONArray(artistsUnparsed);
+        System.out.println(artistListsJson);
 
         if(titlesJson.length() != artistListsJson.length() || titlesJson.length() != files.length)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Number of titles, artist lists and files must be equal.");
@@ -65,9 +81,14 @@ public class SongController {
             titles.add(titlesJson.get(i).toString());
 
             JSONArray currentArtistsJson = new JSONArray(artistListsJson.get(i).toString());
+            System.out.println(currentArtistsJson);
             ArrayList<String> currentArtists = new ArrayList<>();
-            for(int j = 0; j < currentArtistsJson.length(); j++)
-                currentArtists.add(currentArtistsJson.get(j).toString());
+            for(int j = 0; j < currentArtistsJson.length(); j++){
+                String curArtist = currentArtistsJson.get(j).toString();
+                if(!curArtist.isEmpty() && !curArtist.isBlank()){
+                    currentArtists.add(curArtist);
+                }
+            }
             artists.add(currentArtists);
         }
 

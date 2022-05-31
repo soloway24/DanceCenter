@@ -48,7 +48,7 @@ resetPostBtn.onclick = async function () {
             });
         redirectUrl = deleteResponse.url;
     } else
-        redirectUrl = "/addPost";
+        redirectUrl = "/posts/add";
     window.location.href = redirectUrl;
 }
 
@@ -176,14 +176,14 @@ loadFileInput.onchange = async function () {
             if(postSongsIdsStr != null) {
                 let newIds = postSongsIdsStr + ',' + addedIds;
                 if(!/\S/.test(desc)) //desc is blank
-                    window.location.href = "/addPost?postSongsIds=" + newIds;
+                    window.location.href = "/posts/add?postSongsIds=" + newIds;
                 else
-                    window.location.href = "/addPost?postSongsIds=" + newIds + "&description=" + desc;
+                    window.location.href = "/posts/add?postSongsIds=" + newIds + "&description=" + desc;
             } else {
                 if(!/\S/.test(desc)) //desc is blank
-                    window.location.href = "/addPost?postSongsIds=" + addedIds;
+                    window.location.href = "/posts/add?postSongsIds=" + addedIds;
                 else
-                    window.location.href = "/addPost?postSongsIds=" + addedIds + "&description=" + desc;
+                    window.location.href = "/posts/add?postSongsIds=" + addedIds + "&description=" + desc;
             }
         }
     }
