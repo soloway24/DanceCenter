@@ -1,6 +1,6 @@
 let loadFileInput = document.getElementById("loadFileInput");
 
-let editPostDescriptionInput = document.getElementById("editPostDescriptionInput");
+let editPostDescriptionTextArea = document.getElementById("editPostDescriptionTextArea");
 let editSongTitleInput = document.getElementById("editSongTitleInput");
 
 let editSongArtistInput = document.getElementById("editSongArtistInput");
@@ -11,7 +11,7 @@ let addPostBtn = document.getElementById("addPostBtn");
 let resetPostBtn = document.getElementById("resetPostBtn");
 
 addPostBtn.onclick = async function () {
-    let description = editPostDescriptionInput.value;
+    let description = editPostDescriptionTextArea.value;
     let songIds = getParamFromUrl(window.location.href, "postSongsIds");
     if(songIds === null){
         alert("Post should contain at least 1 song.")
@@ -171,7 +171,7 @@ loadFileInput.onchange = async function () {
             let addedIds = JSON.stringify(addedIdsJson);
             addedIds = addedIds.substring(1, addedIds.length - 1);
 
-            let desc = editPostDescriptionInput.value;
+            let desc = editPostDescriptionTextArea.value;
             let postSongsIdsStr = getParamFromUrl(window.location.href, "postSongsIds");
             if(postSongsIdsStr != null) {
                 let newIds = postSongsIdsStr + ',' + addedIds;
@@ -190,7 +190,7 @@ loadFileInput.onchange = async function () {
 }
 
 function resetLoadFileInput() {loadFileInput.value = ""; }
-function resetPostDescription() {editPostDescriptionInput = ""; }
+function resetPostDescription() {editPostDescriptionTextArea = ""; }
 
 function addArtistFromInput(artistInput, artistList) {
     addArtistToList(artistInput.value, artistList);

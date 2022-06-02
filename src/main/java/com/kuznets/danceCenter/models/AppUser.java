@@ -42,13 +42,4 @@ public class AppUser {
         this.password = password;
     }
 
-    public void addFollowing(AppUser user) {
-        if(!following.contains(user) && !Objects.equals(user.username, this.username))
-            following.add(user);
-    }
-
-    public void removeFollowing(AppUser user) {
-        following.remove(user);
-    }
-
 }

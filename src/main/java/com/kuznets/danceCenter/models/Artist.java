@@ -31,7 +31,6 @@ public class Artist {
     @NotNull
     private List<Song> songs = new ArrayList<>();
 
-
     public Artist(String name) {
         this.name = name;
     }

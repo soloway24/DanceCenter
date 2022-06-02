@@ -7,7 +7,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,7 +27,7 @@ public class Song {
     @NotNull
     private String location;
 
-    @ManyToMany(fetch = FetchType.LAZY,
+    @ManyToMany(fetch = FetchType.EAGER,
                 cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "Song_Artist",
@@ -51,15 +52,6 @@ public class Song {
         this.artists = artists;
         this.location = location;
     }
-
-
-//    @Override
-//    public String toString() {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("Title: " + title + ", Artists: ");
-//        artists.forEach(artist -> sb.append(artist.getName() + ", "));
-//        return  sb.substring(0, sb.length() - 2);
-//    }
 
     @Override
     public String toString() {

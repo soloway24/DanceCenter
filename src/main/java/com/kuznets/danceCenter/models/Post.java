@@ -4,10 +4,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity @Data @NoArgsConstructor
@@ -17,7 +21,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column()
+    @Column(length = 2048)
     @NotNull
     private String description;
 
@@ -35,6 +39,9 @@ public class Post {
     @JoinColumn(name="user_id")
     private AppUser appUser;
 
+    @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm:ss")
+    private Date date;
+
     public Post(String description) {
         this.description = description;
     }
@@ -43,21 +50,17 @@ public class Post {
     public Post(String description, List<Song> songs) {
         this.description = description;
         this.songs = songs;
+        Instant instant = new Date().toInstant().truncatedTo(ChronoUnit.MINUTES);
+        date = Date.from(instant);
     }
 
     public Post(String description, List<Song> songs, AppUser user) {
         this.description = description;
         this.songs = songs;
         this.appUser = user;
+        Instant instant = new Date().toInstant().truncatedTo(ChronoUnit.MINUTES);
+        date = Date.from(instant);
     }
-
-//    @Override
-//    public String toString() {
-//        return "Teacher{" +
-//                "id=" + id +
-//                ", name='" + name + '}';
-//    }
-
 
     @Override
     public String toString() {

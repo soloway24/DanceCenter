@@ -8,12 +8,14 @@ import com.kuznets.danceCenter.services.interfaces.ArtistServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Service
+@Transactional
 public class ArtistService implements ArtistServiceInterface {
 
     private ArtistRepository artistRepository;
@@ -47,10 +49,8 @@ public class ArtistService implements ArtistServiceInterface {
     }
 
     @Override
-    public boolean deleteArtist(Long id) {
+    public void deleteArtist(Long id) {
         if(!artistExistsById(id)) throw new ArtistNotFoundException(id);
-
         artistRepository.deleteById(id);
-        return true;
     }
 }

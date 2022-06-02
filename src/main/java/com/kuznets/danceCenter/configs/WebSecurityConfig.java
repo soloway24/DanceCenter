@@ -23,7 +23,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserRepository userRepository;
 
-    @Primary
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl(userRepository);
@@ -44,8 +43,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
-                .antMatchers("/login", "/registration", "/about").permitAll()
+                .antMatchers("/login", "/registration", "/errors/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/add").permitAll()
+                .antMatchers("/posts", "/admin", "/users/getList").hasAuthority("ADMIN")
             .and()
                 .formLogin()
                 .loginPage("/login")

@@ -2,8 +2,14 @@ package com.kuznets.danceCenter.services.interfaces;
 
 import com.kuznets.danceCenter.models.Artist;
 import com.kuznets.danceCenter.models.Song;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.TagException;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -23,4 +29,7 @@ public interface SongServiceInterface {
 
     List<Long> removeNonExistentIds(List<Long> ids);
     List<Artist> createArtistsFromStrings(List<String> artists);
+
+    HashMap<String, String> getSingleFileInfo(MultipartFile file) throws IOException, CannotReadException,
+            TagException, InvalidAudioFrameException, ReadOnlyFileException;
 }

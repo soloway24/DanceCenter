@@ -18,8 +18,8 @@
 
             <div class="form-group" id="postDescAddDiv">
                 <label>Description:</label>
-                <input type="text" class="form-control" name="description"
-                       id="editPostDescriptionInput" th:value="${description}">
+                <textarea class="form-control" name="description"
+                       id="editPostDescriptionTextArea" th:text="${description}"></textarea>
             </div>
 
         <div class="my-3 p-3 bg-body rounded shadow">
@@ -40,29 +40,6 @@
             </div>
         </div>
 
-<!--            <div>-->
-<!--                <h4>Songs</h4>-->
-<!--                <table th:if="${postSongs}" border="1px">-->
-<!--                    <tr th:each="song : ${postSongs}">-->
-<!--                        <td th:text="${song.id}"></td>-->
-<!--                        <td th:text="${song.title}"></td>-->
-<!--                        <td th:text="${song.artists}"></td>-->
-<!--                        <input type="hidden" th:value="${song.location}">-->
-<!--                        <td><audio controls th:src="'../'+${song.location}"></audio></td>-->
-<!--                        <td>-->
-<!--                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editSongModal"-->
-<!--                                    th:attr="data-song_id=${song.id},data-song_title=${song.title},data-song_artists=${song.artists}">Edit</button>-->
-<!--                        </td>-->
-<!--                        <td>-->
-<!--                            <form action="../songs/delete/" method="post">-->
-<!--                                <input name="id" type="hidden" th:value="${song.id}">-->
-<!--                                <button type="submit" class="btn btn-danger">Delete</button>-->
-<!--                            </form>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                </table>-->
-<!--            </div>-->
-
             <div id="addSongsDiv">
                 <h6 class="border-bottom pb-2 mb-0">Add Songs</h6>
                 <div class="input-group mt-3 mb-3">
@@ -72,7 +49,7 @@
 
             <div>
                 <button type="button" class="btn btn-primary" id="addPostBtn">Add</button>
-                <button type="button" class="btn btn-danger" id="resetPostBtn">Reset</button>
+                <button type="button" class="btn btn-secondary" id="resetPostBtn">Reset</button>
             </div>
     </div>
 
@@ -115,5 +92,6 @@
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="../js/addPost.js"></script>
+    <script src="../js/textArea.js"></script>
 </body>
 </html>

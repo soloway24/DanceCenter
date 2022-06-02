@@ -13,32 +13,32 @@
 
     <main class="container">
 
-        <div class="my-3 p-3 bg-body rounded shadow" th:each="user: ${users}">
+        <div class="my-3 p-3 bg-body rounded shadow">
             <h2 class="border-bottom pb-2 mb-0">
-                <a class="dropdown-item" th:href="'/users/'+${user.username}" th:text="'@'+${user.username}"></a>
+                <a class="dropdown-item" th:href="'/users/'+${currentUser.username}" th:text="'@'+${currentUser.username}"></a>
             </h2>
 
-            <a class="dropdown-item mt-3" th:href="'/users/'+${user.username}+'/followers'">
-                <h4 class="pb-2 mb-0" th:text="'Followers - ' + ${user.getFollowers().size()}"></h4>
+            <a class="dropdown-item mt-3" th:href="'/users/'+${currentUser.username}+'/followers'">
+                <h4 class="pb-2 mb-0" th:text="'Followers - ' + ${currentUser.getFollowers().size()}"></h4>
             </a>
-            <a class="dropdown-item" th:href="'/users/'+${user.username}+'/following'">
-                <h4 class="pb-2 mb-0" th:text="'Following - ' + ${user.getFollowing().size()}"></h4>
+            <a class="dropdown-item" th:href="'/users/'+${currentUser.username}+'/following'">
+                <h4 class="pb-2 mb-0" th:text="'Following - ' + ${currentUser.getFollowing().size()}"></h4>
             </a>
-            <a class="dropdown-item" th:href="'/posts/'+${user.username}">
-                <h4 class="pb-2 mb-0" th:text="'Posts - ' + ${user.getPosts().size()}"></h4>
+            <a class="dropdown-item" th:href="'/posts/'+${currentUser.username}">
+                <h4 class="pb-2 mb-0" th:text="'Posts - ' + ${currentUser.getPosts().size()}"></h4>
             </a>
 
-            <form id="toggleFollowForm" th:if="${!user.username.equals(currentUser.username)}"
-                  th:action="'/users/'+${user.username}+'/toggleFollow'" method="post">
+            <form id="toggleFollowForm" th:if="${!currentUser.username.equals(currentUser.username)}"
+                  th:action="'/users/'+${currentUser.username}+'/toggleFollow'" method="post">
                 <button type="submit" id="toggleFollowBtn"
-                        th:class="${currentUser.getFollowing().contains(user)} ? 'btn btn-outline-secondary'
+                        th:class="${currentUser.getFollowing().contains(currentUser)} ? 'btn btn-outline-secondary'
                         : 'btn btn-primary' "
-                th:text="${currentUser.getFollowing().contains(user)} ? 'Unfollow'
+                th:text="${currentUser.getFollowing().contains(currentUser)} ? 'Unfollow'
                 : 'Follow' "></button>
             </form>
 
-            <div class="my-3 p-3 bg-body rounded shadow" th:if="${showPosts}"
-                 th:each="post : ${user.posts}" >
+            <div class="my-3 p-3 bg-body rounded shadow"
+                 th:each="post : ${currentUser.posts}" >
                 <h2 class="border-bottom pb-2 mb-0">
                     <a class="dropdown-item" th:href="'/users/'+${post.getAppUser().getUsername()}" th:text="'@'+${post.getAppUser().getUsername()}"></a>
                 </h2>
@@ -55,11 +55,17 @@
                             </strong>
                         </p>
                         <audio controls
-                               th:src="'../'+${song.location}"></audio>
+                               th:src="'../../'+${song.location}"></audio>
                     </div>
                 </div>
                 <p th:text="${post.date}"></p>
 
+                <div class="text-end">
+                    <form action="../posts/delete/" method="post">
+                        <input name="id" type="hidden" th:value="${post.id}">
+                        <button class="btn btn-outline-secondary" type="submit">Delete</button>
+                    </form>
+                </div>
             </div>
         </div>
 

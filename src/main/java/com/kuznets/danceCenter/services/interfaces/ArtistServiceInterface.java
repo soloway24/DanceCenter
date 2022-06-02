@@ -13,5 +13,5 @@ public interface ArtistServiceInterface {
     Artist getArtistById(Long id) throws Exception;
     Iterable<Artist> getAll();
 
-    boolean deleteArtist(Long id);
+    void deleteArtist(Long id);
 }

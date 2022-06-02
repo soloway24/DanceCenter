@@ -7,18 +7,31 @@ import com.kuznets.danceCenter.repositories.ArtistRepository;
 import com.kuznets.danceCenter.repositories.SongRepository;
 import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
 import com.kuznets.danceCenter.utils.Values;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.TagException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 @Service
+@Transactional
 public class SongService implements SongServiceInterface {
 
     private SongRepository songRepository;
@@ -88,12 +101,15 @@ public class SongService implements SongServiceInterface {
     @Override
     public Song updateSong(@NotNull Long id, @NotNull String title, List<String> artists) throws SongNotFoundException {
         Song song = getSongById(id);
+        List<Artist> oldArtists = song.getArtists();
         song.setTitle(title);
         song.setArtists(createArtistsFromStrings(artists));
+        for(Artist artist : oldArtists){
+            if(!song.getArtists().contains(artist) && artist.getSongs().size() == 1)
+                artistRepository.delete(artist);
+        }
         return songRepository.save(song);
     }
-
-
 
     @Override
     public List<Long> removeNonExistentIds(List<Long> ids) {
@@ -131,6 +147,8 @@ public class SongService implements SongServiceInterface {
     public void deleteSongById(Long id) throws Exception {
         if(!songExistsById(id)) throw new SongNotFoundException(id);
 
+        Song song = songRepository.getById(id);
+
         File uploadPath = new File(Values.UPLOAD_PATH);
         if(!uploadPath.exists())
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Upload folder doesn't exist.");
@@ -143,6 +161,10 @@ public class SongService implements SongServiceInterface {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"File was not deleted.");
 
         songRepository.deleteById(id);
+
+        for(Artist artist : song.getArtists())
+            if(artist.getSongs().size()==1)
+                artistRepository.delete(artist);
     }
 
     @Override
@@ -154,5 +176,42 @@ public class SongService implements SongServiceInterface {
     @Override
     public void deleteAll() {
         songRepository.deleteAll();
+    }
+
+    public HashMap<String,String> getSingleFileInfo(MultipartFile file) throws IOException, CannotReadException,
+            TagException, InvalidAudioFrameException, ReadOnlyFileException {
+        AudioFile audioFile;
+        HashMap<String, String > map = new HashMap<>();
+
+        File uploadPath = new File(Values.UPLOAD_PATH);
+        String uuid = UUID.randomUUID().toString();
+        String fileName = uuid + "." + file.getOriginalFilename();
+        File newFile = new File(uploadPath.getAbsolutePath(), fileName);
+
+        file.transferTo(newFile);
+        audioFile = AudioFileIO.read(newFile);
+
+        Tag tag = audioFile.getTag();
+        if(tag != null) {
+            map.put("TITLE", tag.getFirst(FieldKey.TITLE));
+            map.put("ARTIST", tag.getFirst(FieldKey.ARTIST));
+            map.put("ALBUM_ARTIST", tag.getFirst(FieldKey.ALBUM_ARTIST));
+            map.put("ALBUM", tag.getFirst(FieldKey.ALBUM));
+            map.put("YEAR", tag.getFirst(FieldKey.YEAR));
+            map.put("COMPOSER", tag.getFirst(FieldKey.COMPOSER));
+            map.put("GENRE", tag.getFirst(FieldKey.GENRE));
+        } else {
+            map.put("TITLE", "");
+            map.put("ARTIST", "");
+            map.put("ALBUM_ARTIST", "");
+            map.put("ALBUM", "");
+            map.put("YEAR", "");
+            map.put("COMPOSER", "");
+            map.put("GENRE", "");
+        }
+
+        newFile.delete();
+
+        return map;
     }
 }

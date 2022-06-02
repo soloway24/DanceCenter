@@ -2,6 +2,7 @@ package com.kuznets.danceCenter.controllers;
 
 import com.kuznets.danceCenter.models.AppUser;
 import com.kuznets.danceCenter.models.Song;
+import com.kuznets.danceCenter.services.implementations.UserDetailsServiceImpl;
 import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
 import com.kuznets.danceCenter.services.interfaces.UserServiceInterface;
 import com.kuznets.danceCenter.utils.Utils;
@@ -14,13 +15,11 @@ import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
-import org.json.*;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,24 +34,26 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
+@Transactional
 @RequestMapping("/songs")
 public class SongController {
 
     private SongServiceInterface songService;
     private UserServiceInterface userService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public SongController(SongServiceInterface songService, UserServiceInterface userService) {
+    public SongController(SongServiceInterface songService,
+                          UserServiceInterface userService, UserDetailsServiceImpl userDetailsService) {
         this.songService = songService;
         this.userService = userService;
+        this.userDetailsService = userDetailsService;
     }
 
     private void populateModel(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) auth.getPrincipal();
-        AppUser appUser = userService.getUserByUsername(user.getUsername());
-        model.addAttribute("songs",songService.getAll());
-        model.addAttribute("currentUser", appUser);
+        model.addAttribute("songs", songService.getAll());
+        userDetailsService.addUserToModel(model);
+        Utils.addAppNameToModel(model);
     }
 
     @GetMapping
@@ -67,7 +68,6 @@ public class SongController {
                                        @RequestParam(name = "files") MultipartFile[] files) throws Exception {
         JSONArray titlesJson = new JSONArray(titlesUnparsed);
         JSONArray artistListsJson = new JSONArray(artistsUnparsed);
-        System.out.println(artistListsJson);
 
         if(titlesJson.length() != artistListsJson.length() || titlesJson.length() != files.length)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Number of titles, artist lists and files must be equal.");
@@ -81,7 +81,6 @@ public class SongController {
             titles.add(titlesJson.get(i).toString());
 
             JSONArray currentArtistsJson = new JSONArray(artistListsJson.get(i).toString());
-            System.out.println(currentArtistsJson);
             ArrayList<String> currentArtists = new ArrayList<>();
             for(int j = 0; j < currentArtistsJson.length(); j++){
                 String curArtist = currentArtistsJson.get(j).toString();
@@ -107,10 +106,10 @@ public class SongController {
         String notification;
         try {
             songService.updateSong(id, title, artists);
-            notification = "Композиція (id=" + id + ") була успішно оновлена.";
+            notification = "Song (id=" + id + ") has been updated.";
             success = true;
         } catch (Exception e) {
-            notification = "Композиція (id=" + id + ") не була оновлена.";
+            notification = "Song (id=" + id + ") has not been updated.";
             success = false;
             redir.addFlashAttribute("error", e.getMessage());
         }
@@ -135,10 +134,10 @@ public class SongController {
         try {
             String title = songService.getSongById(id).getTitle();
             songService.deleteSongById(id);
-            notification = "Композиція '"+ title +"'(id=" + id + ") була успішно видалена!";
+            notification = "Song '"+ title +"'(id=" + id + ") has been deleted!";
             success = true;
         } catch (Exception e) {
-            notification = "Композиція (id=" + id + ") не була видалена!";
+            notification = "Song (id=" + id + ") has not been deleted!";
             success = false;
             redir.addFlashAttribute("error", e.getMessage());
         }
@@ -157,16 +156,16 @@ public class SongController {
     public RedirectView deleteMultipleSongs(@RequestBody String idsUnparsed, HttpServletRequest request, RedirectAttributes redir){
         List<Long> ids = idsUnparsed.length()>2 ? Utils.stringToIdList(idsUnparsed) : new ArrayList<>();
         if(ids.size() == 0)
-            return new RedirectView("/errors/delete",true);
+            return new RedirectView("/errors/deleteSong",true);
 
         boolean success;
         String notification;
         try {
             songService.deleteSongsByIds(ids);
-            notification = "Композиції із ID: '"+ Arrays.toString(ids.toArray()) +"' були успішно видалені!";
+            notification = "Songs with IDs: '"+ Arrays.toString(ids.toArray()) +"' have been deleted!";
             success = true;
         } catch (Exception e) {
-            notification = "(Не всі) Композиції із ID: '"+ Arrays.toString(ids.toArray()) +"' не були видалені!";
+            notification = "(Not all) Song with IDs: '"+ Arrays.toString(ids.toArray()) +"' have not been deleted!";
             success = false;
             redir.addFlashAttribute("error", e.getMessage());
         }
@@ -178,7 +177,7 @@ public class SongController {
             String referer = request.getHeader("Referer");
             return new RedirectView(referer,true);
         }else
-            return new RedirectView("/errors/delete",true);
+            return new RedirectView("/errors/deleteSong",true);
     }
 
     @PostMapping("/deleteAll")
@@ -186,7 +185,7 @@ public class SongController {
 
         songService.deleteAll();
 
-        String notification = "Усі композиції були успішно видалені!";
+        String notification = "All songs have been deleted!";
 
         redir.addFlashAttribute("success", true);
         redir.addFlashAttribute("notification", notification);
@@ -198,7 +197,7 @@ public class SongController {
     @PostMapping("/fileInfo")
     @ResponseBody
     public HashMap<String,String> getFileInfo(@RequestParam("file") MultipartFile file) throws CannotReadException, TagException, InvalidAudioFrameException, ReadOnlyFileException, IOException {
-        return getSingleFileInfo(file);
+        return songService.getSingleFileInfo(file);
     }
 
     @PostMapping("/multipleFileInfo")
@@ -206,45 +205,8 @@ public class SongController {
     public ArrayList<HashMap<String,String>> getMultipleFileInfo(@RequestParam("files") List<MultipartFile> files) throws CannotReadException, TagException, InvalidAudioFrameException, ReadOnlyFileException, IOException {
         ArrayList<HashMap<String,String>> list = new ArrayList<>();
         for(MultipartFile file : files){
-            list.add(getSingleFileInfo(file));
+            list.add(songService.getSingleFileInfo(file));
         }
         return list;
-    }
-
-    private HashMap<String,String> getSingleFileInfo(MultipartFile file) throws IOException, CannotReadException, TagException, InvalidAudioFrameException, ReadOnlyFileException {
-        AudioFile audioFile;
-        HashMap<String, String > map = new HashMap<>();
-
-        File uploadPath = new File(Values.UPLOAD_PATH);
-        String uuid = UUID.randomUUID().toString();
-        String fileName = uuid + "." + file.getOriginalFilename();
-        File newFile = new File(uploadPath.getAbsolutePath(), fileName);
-
-        file.transferTo(newFile);
-        audioFile = AudioFileIO.read(newFile);
-
-        Tag tag = audioFile.getTag();
-        if(tag != null) {
-            map.put("TITLE", tag.getFirst(FieldKey.TITLE));
-            map.put("ARTIST", tag.getFirst(FieldKey.ARTIST));
-            map.put("ALBUM_ARTIST", tag.getFirst(FieldKey.ALBUM_ARTIST));
-            map.put("ALBUM", tag.getFirst(FieldKey.ALBUM));
-            map.put("YEAR", tag.getFirst(FieldKey.YEAR));
-            map.put("COMPOSER", tag.getFirst(FieldKey.COMPOSER));
-            map.put("GENRE", tag.getFirst(FieldKey.GENRE));
-        } else {
-            map.put("TITLE", "");
-            map.put("ARTIST", "");
-            map.put("ALBUM_ARTIST", "");
-            map.put("ALBUM", "");
-            map.put("YEAR", "");
-            map.put("COMPOSER", "");
-            map.put("GENRE", "");
-        }
-
-
-        newFile.delete();
-
-        return map;
     }
 }

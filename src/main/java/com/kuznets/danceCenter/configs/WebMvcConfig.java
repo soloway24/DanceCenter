@@ -20,9 +20,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/images/");
     }
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/registration").setViewName("registration");
-        registry.addViewController("/login").setViewName("login");
-    }
 }

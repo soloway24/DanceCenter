@@ -1,14 +1,14 @@
 package com.kuznets.danceCenter.repositories;
 
 import com.kuznets.danceCenter.models.Artist;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface ArtistRepository extends CrudRepository<Artist,Long> {
+public interface ArtistRepository extends JpaRepository<Artist,Long> {
 
     Iterable<Artist> findByName(String s);
     boolean existsByName(String name);

@@ -2,35 +2,39 @@ package com.kuznets.danceCenter.controllers;
 
 
 import com.kuznets.danceCenter.models.AppUser;
-import com.kuznets.danceCenter.models.Role;
-import com.kuznets.danceCenter.models.Song;
+import com.kuznets.danceCenter.services.implementations.UserDetailsServiceImpl;
 import com.kuznets.danceCenter.services.interfaces.UserServiceInterface;
 import com.kuznets.danceCenter.utils.Utils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.persistence.Access;
 import javax.servlet.http.HttpServletRequest;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 @Controller
-@RequiredArgsConstructor
+@Transactional
 @RequestMapping("/users")
 public class UserController {
 
     private final UserServiceInterface userService;
+    private final UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    public UserController(UserServiceInterface userService, UserDetailsServiceImpl userDetailsService) {
+        this.userService = userService;
+        this.userDetailsService = userDetailsService;
+    }
+
 
     @GetMapping("/getList")
     public ResponseEntity<List<AppUser>> getUsers() {
@@ -38,52 +42,53 @@ public class UserController {
     }
 
 
-    private void addUserToModel(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) auth.getPrincipal();
-        AppUser appUser = userService.getUserByUsername(user.getUsername());
-        model.addAttribute("currentUser", appUser);
-    }
-
-    private AppUser getCurrentUser() {
-        User user = Utils.getCurrentUser();
-        return userService.getUserByUsername(user.getUsername());
-    }
-
     @GetMapping
     public String users(Model model) {
-        addUserToModel(model);
+        userDetailsService.addUserToModel(model);
+        Utils.addAppNameToModel(model);
         model.addAttribute("users",userService.getAllUsers());
         return "users";
     }
 
-    @GetMapping("/me")
-    public String me() {
-        User user = Utils.getCurrentUser();
-        return "redirect:/users/" + user.getUsername();
+    @GetMapping("/{username}/profile")
+    public String profile(@PathVariable("username") String username, Model model, RedirectAttributes redir) {
+        if(!username.equals(userDetailsService.getCurrentAppUser().getUsername())){
+            redir.addFlashAttribute("notification", "No permission to open other user's profile.");
+            return "redirect:/errors/error";
+        }
+        userDetailsService.addUserToModel(model);
+        Utils.addAppNameToModel(model);
+        return "profile";
     }
 
     @GetMapping("/{username}")
-    public String profile(@PathVariable("username") String username, Model model) {
-        addUserToModel(model);
-        AppUser appUser = userService.getUserByUsername(username);
-        model.addAttribute("users", Collections.singleton(appUser));
+    public String user(@PathVariable("username") String username, Model model) {
+        if(username.equals(userDetailsService.getCurrentAppUser().getUsername())){
+            return "redirect:/users/"+username+"/profile";
+        }
+        AppUser viewedUser = userService.getUserByUsername(username);
+        userDetailsService.addUserToModel(model);
+        model.addAttribute("users", Collections.singleton(viewedUser));
+        model.addAttribute("showPosts", true);
+        Utils.addAppNameToModel(model);
         return "users";
     }
 
     @GetMapping("/{username}/followers")
     public String userFollowers(@PathVariable("username") String username, Model model) {
-        AppUser appUser = userService.getUserByUsername(username);
-        model.addAttribute("users", appUser.getFollowers());
-        addUserToModel(model);
+        AppUser viewedUser = userService.getUserByUsername(username);
+        model.addAttribute("users", viewedUser.getFollowers());
+        userDetailsService.addUserToModel(model);
+        Utils.addAppNameToModel(model);
         return "users";
     }
 
     @GetMapping("/{username}/following")
     public String userFollowing(@PathVariable("username") String username, Model model) {
-        AppUser appUser = userService.getUserByUsername(username);
-        model.addAttribute("users", appUser.getFollowing());
-        addUserToModel(model);
+        AppUser viewedUser = userService.getUserByUsername(username);
+        model.addAttribute("users", viewedUser.getFollowing());
+        userDetailsService.addUserToModel(model);
+        Utils.addAppNameToModel(model);
         return "users";
     }
 
@@ -94,7 +99,7 @@ public class UserController {
         String notification;
         try {
             AppUser appUser = userService.getUserByUsername(username);
-            AppUser currentUser = getCurrentUser();
+            AppUser currentUser = userDetailsService.getCurrentAppUser();
             if (currentUser.getFollowing().contains(appUser))
                 currentUser.getFollowing().remove(appUser);
             else
@@ -121,12 +126,12 @@ public class UserController {
         boolean success;
         String notification;
         try {
-            AppUser user = userService.addUser(username, password);
+            userService.addUser(username, password);
             userService.addRoleToUser(username, "USER");
-            notification = "Користувач '"+username+"' був успішно доданий!";
+            notification = "User '"+username+"' has been added!";
             success = true;
         } catch (Exception e) {
-            notification = "Користувач '"+username+"' не був доданий!";
+            notification = "User '"+username+"' has not been added!";
             success = false;
             redir.addFlashAttribute("error", e.getMessage());
         }
@@ -134,22 +139,9 @@ public class UserController {
         redir.addFlashAttribute("success", success);
         redir.addFlashAttribute("notification", notification);
         if(success){
-//            String referer = request.getHeader("Referer");
-            return new RedirectView("/users",true);
+            return new RedirectView("/",true);
         }else
-            return new RedirectView("/errors/addPost",true);
+            return new RedirectView("/errors/error",true);
     }
 
-//    @PostMapping("/add")
-//    @ResponseBody
-//    public ResponseEntity<AppUser> addUser(@RequestParam String username, @RequestParam String password) {
-//        try {
-//            AppUser user = userService.addUser(username, password);
-//            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/add").toUriString());
-//            return ResponseEntity.created(uri).body(user);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.internalServerError().build();
-//        }
-//    }
 }

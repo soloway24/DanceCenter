@@ -17,7 +17,7 @@
             <h2 class="border-bottom pb-2 mb-0">
                 <a class="dropdown-item" th:href="'/users/'+${post.getAppUser().getUsername()}" th:text="'@'+${post.getAppUser().getUsername()}"></a>
             </h2>
-            <p th:text="${post.description}"></p>
+            <textarea class="form-control" readonly th:text="${post.description}"></textarea>
             <div class="d-flex text-muted mb-3" th:each="song: ${post.songs}">
                 <div class="container">
                     <p class="pb-3 pt-3 mb-0 small lh-sm border-top">
@@ -33,7 +33,7 @@
                            th:src="'../'+${song.location}"></audio>
                 </div>
             </div>
-
+            <p th:text="${post.date}"></p>
         </div>
 
     </main>
@@ -42,6 +42,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+    <script src="../js/textArea.js"></script>
 </body>
 </html>

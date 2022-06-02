@@ -22,11 +22,12 @@
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/posts/feed" class="nav-link px-2 link-dark">Feed</a></li>
-                    <li><a href="/posts" class="nav-link px-2 link-dark">All Posts</a></li>
-                    <li><a href="/songs" class="nav-link px-2 link-dark">All Songs</a></li>
+                    <li th:if="${isAdmin}"><a href="/posts" class="nav-link px-2 link-dark">Posts</a></li>
+                    <li><a href="/songs" class="nav-link px-2 link-dark">Songs</a></li>
                     <li><a href="/artists" class="nav-link px-2 link-dark">Artists</a></li>
                     <li><a href="/users" class="nav-link px-2 link-dark">Users</a></li>
                     <li><a href="/about" class="nav-link px-2 link-dark">About</a></li>
+                    <li th:if="${isAdmin}"><a href="/admin" class="nav-link px-2 link-dark">Admin</a></li>
                 </ul>
 
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
@@ -39,7 +40,7 @@
                     th:text="${currentUser.username}"></a>
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                         <li><a class="dropdown-item" href="/posts/add">New post...</a></li>
-                        <li><a class="dropdown-item"  href="/users/me">Profile</a></li>
+                        <li><a class="dropdown-item"  th:href="'/users/'+${currentUser.username}+'/profile'">Profile</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form action="/logout" method="post">
