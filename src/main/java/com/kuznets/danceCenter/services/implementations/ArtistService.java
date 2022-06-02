@@ -49,6 +49,11 @@ public class ArtistService implements ArtistServiceInterface {
     }
 
     @Override
+    public List<Artist> getByNameText(String searchQuery) {
+        return artistRepository.findAllByNameText(searchQuery);
+    }
+
+    @Override
     public void deleteArtist(Long id) {
         if(!artistExistsById(id)) throw new ArtistNotFoundException(id);
         artistRepository.deleteById(id);

@@ -8,10 +8,12 @@ import com.kuznets.danceCenter.services.interfaces.UserServiceInterface;
 import com.kuznets.danceCenter.utils.Utils;
 import com.kuznets.danceCenter.utils.Values;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Transactional
@@ -60,5 +62,16 @@ public class MainController {
         Utils.addAppNameToModel(model);
         userDetailsService.addUserToModel(model);
         return "about";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam String searchQuery, Model model) {
+        model.addAttribute("users", userService.getByUsernameText(searchQuery));
+        model.addAttribute("artists", artistService.getByNameText(searchQuery));
+        model.addAttribute("songs", songService.getByTitleText(searchQuery));
+        model.addAttribute("searchQuery", searchQuery);
+        userDetailsService.addUserToModel(model);
+        Utils.addAppNameToModel(model);
+        return "searchResult";
     }
 }

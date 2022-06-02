@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist,Long> {
@@ -13,7 +15,9 @@ public interface ArtistRepository extends JpaRepository<Artist,Long> {
     Iterable<Artist> findByName(String s);
     boolean existsByName(String name);
 
-    @Query("select case when count(t)> 0 then true else false end from Artist t where lower(t.name) like lower(concat('%', :name,'%'))")
+    @Query("select case when count(a)> 0 then true else false end from Artist a where lower(a.name) like lower(concat('%', :name,'%'))")
     boolean existsByNameText(@Param("name") String name);
 
+    @Query("select a from Artist a where lower(a.name) like lower(concat('%', :name,'%'))")
+    List<Artist> findAllByNameText(@Param("name") String name);
 }

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${appName}"></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+
+    <div th:replace="header :: header"></div>
+
+    <main class="container">
+
+        <h4 th:text="${ users.size() == 0 && artists.size() == 0 && songs.size() == 0
+        ? 'No results for query &quot;' + searchQuery + '&quot;.'
+        : 'Results for query  &quot;' + searchQuery + '&quot; :'} "></h4>
+
+
+        <div class="my-3 p-3 bg-body rounded shadow" th:if="${users.size() > 0}">
+            <h6 class="border-bottom pb-2 mb-0">Users</h6>
+            <div class="my-3 p-3 bg-body rounded shadow"  th:each="user: ${users}">
+                <h2 class="border-bottom pb-2 mb-0">
+                    <a class="dropdown-item" th:href="'/users/'+${user.username}" th:text="'@'+${user.username}"></a>
+                </h2>
+
+                <a class="dropdown-item mt-3" th:href="'/users/'+${user.username}+'/followers'">
+                    <h4 class="pb-2 mb-0" th:text="'Followers - ' + ${user.getFollowers().size()}"></h4>
+                </a>
+                <a class="dropdown-item" th:href="'/users/'+${user.username}+'/following'">
+                    <h4 class="pb-2 mb-0" th:text="'Following - ' + ${user.getFollowing().size()}"></h4>
+                </a>
+                <a class="dropdown-item" th:href="'/posts/'+${user.username}">
+                    <h4 class="pb-2 mb-0" th:text="'Posts - ' + ${user.getPosts().size()}"></h4>
+                </a>
+
+                <form id="toggleFollowForm" th:if="${!user.username.equals(currentUser.username)}"
+                      th:action="'/users/'+${user.username}+'/toggleFollow'" method="post">
+                    <button type="submit" id="toggleFollowBtn"
+                            th:class="${currentUser.getFollowing().contains(user)} ? 'btn btn-outline-secondary'
+                        : 'btn btn-primary' "
+                            th:text="${currentUser.getFollowing().contains(user)} ? 'Unfollow'
+                : 'Follow' "></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="my-3 p-3 bg-body rounded shadow" th:if="${artists.size() > 0}">
+            <h6 class="border-bottom pb-2 mb-0">Artists</h6>
+            <div class="my-3 p-3 bg-body rounded shadow"  th:each="artist: ${artists}">
+                <h6 class="border-bottom pb-2 mb-0">
+                    <a class="dropdown-item"
+                       th:href="'/artists/'+${artist.getId()}"
+                       th:text="${artist.name}">
+                    </a>
+                </h6>
+            </div>
+        </div>
+
+        <div class="my-3 p-3 bg-body rounded shadow"  th:if="${songs.size() > 0}">
+            <h6 class="border-bottom pb-2 mb-0">Songs</h6>
+            <div class="d-flex text-muted pt-3" th:each="song: ${songs}">
+                <div class="container">
+                    <p class="pb-3 pt-3 mb-0 small lh-sm">
+                        <strong class="text-gray-dark" th:text="${song.title}"></strong>
+                        <strong class="text-gray-dark" th:if="${song.artists.size() > 0}"> - </strong>
+                        <strong class="text-gray-dark" th:each="artist : ${song.artists}">
+                            <a th:href="'/artists/' + ${artist.getId()}"
+                               th:text="${artist.getName()}"></a>
+                            <strong class="text-gray-dark" th:if="${song.artists.indexOf(artist)} != ${song.artists.size() - 1}">, </strong>
+                        </strong>
+                    </p>
+                    <audio controls th:src="${song.location}"></audio>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</body>
+</html>

@@ -12,6 +12,8 @@ public interface ArtistServiceInterface {
     boolean artistExistsById(Long id);
     Artist getArtistById(Long id) throws Exception;
     Iterable<Artist> getAll();
+    List<Artist> getByNameText(String searchQuery);
+
 
     void deleteArtist(Long id);
 }

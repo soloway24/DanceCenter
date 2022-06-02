@@ -144,6 +144,11 @@ public class SongService implements SongServiceInterface {
     }
 
     @Override
+    public List<Song> getByTitleText(String searchQuery) {
+        return songRepository.findByTitleText(searchQuery);
+    }
+
+    @Override
     public void deleteSongById(Long id) throws Exception {
         if(!songExistsById(id)) throw new SongNotFoundException(id);
 

@@ -13,6 +13,7 @@ public interface UserServiceInterface {
     List<AppUser> getAllUsers();
 
     boolean userExistsByUsername(String username);
+    List<AppUser> getByUsernameText(String searchQuery);
 
     Role addRole(String name);
     Role getRoleByRoleName(String roleName);

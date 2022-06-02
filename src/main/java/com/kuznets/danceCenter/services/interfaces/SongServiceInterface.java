@@ -1,5 +1,6 @@
 package com.kuznets.danceCenter.services.interfaces;
 
+import com.kuznets.danceCenter.models.AppUser;
 import com.kuznets.danceCenter.models.Artist;
 import com.kuznets.danceCenter.models.Song;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -22,6 +23,7 @@ public interface SongServiceInterface {
     Song getSongById(Long id) throws Exception;
     List<Song> getSongsByIds(List<Long> ids) throws Exception;
     Iterable<Song> getAll();
+    List<Song> getByTitleText(String searchQuery);
 
     void deleteSongById(Long id) throws Exception;
     void deleteSongsByIds(List<Long> ids) throws Exception;

@@ -4,46 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d0289d5a-5e23-428f-b02b-26e97fd1ccea" name="Default Changelist" comment="Added spring security.&#10;Added AppUser, service, repo, controller.&#10;Added and changed many pages in UI.&#10;Added follower-following system and feed page based on followings.&#10;&#10;Role difference to be implemented.">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/js/registration.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/js/textArea.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/profile.html" afterDir="false" />
+    <list default="true" id="d0289d5a-5e23-428f-b02b-26e97fd1ccea" name="Default Changelist" comment="Removed redundant code, refactored for better decomposition.&#10;Header tabs are displayed accordingly to user's authority.&#10;Profile page separated from users page to allow current user delete their posts.&#10;Added confirm password check in registration page.&#10;Changed description field in addPost from input to textArea with textArea.js script.&#10;Added @Transactional for all services and controllers that are using repositories.&#10;Added date and sorting by date for posts (all repositories are changed from CrudRepository to JpaRepository for sorting purposes).">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/searchResult.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/configs/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/configs/WebMvcConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/configs/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/configs/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/ArtistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/ArtistController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/AuthenticationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/MyErrorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/MyErrorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/SongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/SongController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/init/DataInit.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/AppUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/AppUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Artist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Artist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Song.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Song.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/ArtistRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/ArtistRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/PostRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/SongRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/SongRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/ArtistService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/ArtistService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/PostService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/SongService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/SongService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/UserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/UserDetailsServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/ArtistServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/ArtistServiceInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/SongServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/SongServiceInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/UserServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/UserServiceInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/utils/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/utils/Values.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/utils/Values.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/js/addPost.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/js/addPost.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/addPostPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/addPostPage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/mainPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/adminPage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/posts.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/posts.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/registration.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/registration.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/users.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/users.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +109,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect" value="PostgreSQL" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/templates" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Spring/BookQueries" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -314,7 +288,8 @@
       <workItem from="1653987139712" duration="18154000" />
       <workItem from="1654068478536" duration="602000" />
       <workItem from="1654081564205" duration="18511000" />
-      <workItem from="1654155233674" duration="4366000" />
+      <workItem from="1654155233674" duration="5314000" />
+      <workItem from="1654174048281" duration="3571000" />
     </task>
     <task id="LOCAL-00001" summary="First commit. &#10;Implemented mvc pattern with main models, repositories, services, controllers. Connected PostgreSQL database. Added simple visualization in html with Thymeleaf.">
       <created>1647028928494</created>
@@ -393,7 +368,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654016036568</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Removed redundant code, refactored for better decomposition.&#10;Header tabs are displayed accordingly to user's authority.&#10;Profile page separated from users page to allow current user delete their posts.&#10;Added confirm password check in registration page.&#10;Changed description field in addPost from input to textArea with textArea.js script.&#10;Added @Transactional for all services and controllers that are using repositories.&#10;Added date and sorting by date for posts (all repositories are changed from CrudRepository to JpaRepository for sorting purposes).">
+      <created>1654160390456</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1654160390456</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -430,7 +412,8 @@
     <MESSAGE value="Removed unnecessary methods, comments, html elements etc.&#10;Added error handling for controllers and in the js file.&#10;Fixed file info retrieval, song creation.&#10;Fixed redirections and info passing while redirecting for adding a post.&#10;Changed collections in BD from Set to List to maintain order inside them.&#10;Other minor fixes (validation, refactoring)." />
     <MESSAGE value="Moved view part to Bootstrap 5.0.&#10;Added header template, used layout logic (including templates in templates).&#10;Created Posts, Songs, Artist and About pages.&#10;Edited Main page." />
     <MESSAGE value="Added spring security.&#10;Added AppUser, service, repo, controller.&#10;Added and changed many pages in UI.&#10;Added follower-following system and feed page based on followings.&#10;&#10;Role difference to be implemented." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added spring security.&#10;Added AppUser, service, repo, controller.&#10;Added and changed many pages in UI.&#10;Added follower-following system and feed page based on followings.&#10;&#10;Role difference to be implemented." />
+    <MESSAGE value="Removed redundant code, refactored for better decomposition.&#10;Header tabs are displayed accordingly to user's authority.&#10;Profile page separated from users page to allow current user delete their posts.&#10;Added confirm password check in registration page.&#10;Changed description field in addPost from input to textArea with textArea.js script.&#10;Added @Transactional for all services and controllers that are using repositories.&#10;Added date and sorting by date for posts (all repositories are changed from CrudRepository to JpaRepository for sorting purposes)." />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed redundant code, refactored for better decomposition.&#10;Header tabs are displayed accordingly to user's authority.&#10;Profile page separated from users page to allow current user delete their posts.&#10;Added confirm password check in registration page.&#10;Changed description field in addPost from input to textArea with textArea.js script.&#10;Added @Transactional for all services and controllers that are using repositories.&#10;Added date and sorting by date for posts (all repositories are changed from CrudRepository to JpaRepository for sorting purposes)." />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
