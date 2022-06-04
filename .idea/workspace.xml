@@ -4,20 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d0289d5a-5e23-428f-b02b-26e97fd1ccea" name="Default Changelist" comment="Removed redundant code, refactored for better decomposition.&#10;Header tabs are displayed accordingly to user's authority.&#10;Profile page separated from users page to allow current user delete their posts.&#10;Added confirm password check in registration page.&#10;Changed description field in addPost from input to textArea with textArea.js script.&#10;Added @Transactional for all services and controllers that are using repositories.&#10;Added date and sorting by date for posts (all repositories are changed from CrudRepository to JpaRepository for sorting purposes).">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/searchResult.html" afterDir="false" />
+    <list default="true" id="d0289d5a-5e23-428f-b02b-26e97fd1ccea" name="Default Changelist" comment="Added /search endpoint, findByText methods to repositories and services.&#10;Added searchResult page.&#10;Fixed search form in header.">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_validation_2_6_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_validation_validation_api_2_0_1_Final.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/danceCenter.iml" beforeDir="false" afterPath="$PROJECT_DIR$/danceCenter.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/configs/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/configs/WebMvcConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/ArtistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/ArtistController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/AuthenticationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/ArtistRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/ArtistRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/SongRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/SongRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/repositories/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/ArtistService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/ArtistService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/SongService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/SongService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/implementations/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/ArtistServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/ArtistServiceInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/SongServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/SongServiceInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/UserServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/services/interfaces/UserServiceInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/PostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/SongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/controllers/SongController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/AppUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/AppUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuznets/danceCenter/models/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/profile.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -289,7 +291,9 @@
       <workItem from="1654068478536" duration="602000" />
       <workItem from="1654081564205" duration="18511000" />
       <workItem from="1654155233674" duration="5314000" />
-      <workItem from="1654174048281" duration="3571000" />
+      <workItem from="1654174048281" duration="4800000" />
+      <workItem from="1654243824451" duration="15281000" />
+      <workItem from="1654357510114" duration="594000" />
     </task>
     <task id="LOCAL-00001" summary="First commit. &#10;Implemented mvc pattern with main models, repositories, services, controllers. Connected PostgreSQL database. Added simple visualization in html with Thymeleaf.">
       <created>1647028928494</created>
@@ -375,7 +379,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654160390456</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Added /search endpoint, findByText methods to repositories and services.&#10;Added searchResult page.&#10;Fixed search form in header.">
+      <created>1654177663756</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1654177663756</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -413,7 +424,8 @@
     <MESSAGE value="Moved view part to Bootstrap 5.0.&#10;Added header template, used layout logic (including templates in templates).&#10;Created Posts, Songs, Artist and About pages.&#10;Edited Main page." />
     <MESSAGE value="Added spring security.&#10;Added AppUser, service, repo, controller.&#10;Added and changed many pages in UI.&#10;Added follower-following system and feed page based on followings.&#10;&#10;Role difference to be implemented." />
     <MESSAGE value="Removed redundant code, refactored for better decomposition.&#10;Header tabs are displayed accordingly to user's authority.&#10;Profile page separated from users page to allow current user delete their posts.&#10;Added confirm password check in registration page.&#10;Changed description field in addPost from input to textArea with textArea.js script.&#10;Added @Transactional for all services and controllers that are using repositories.&#10;Added date and sorting by date for posts (all repositories are changed from CrudRepository to JpaRepository for sorting purposes)." />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed redundant code, refactored for better decomposition.&#10;Header tabs are displayed accordingly to user's authority.&#10;Profile page separated from users page to allow current user delete their posts.&#10;Added confirm password check in registration page.&#10;Changed description field in addPost from input to textArea with textArea.js script.&#10;Added @Transactional for all services and controllers that are using repositories.&#10;Added date and sorting by date for posts (all repositories are changed from CrudRepository to JpaRepository for sorting purposes)." />
+    <MESSAGE value="Added /search endpoint, findByText methods to repositories and services.&#10;Added searchResult page.&#10;Fixed search form in header." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added /search endpoint, findByText methods to repositories and services.&#10;Added searchResult page.&#10;Fixed search form in header." />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

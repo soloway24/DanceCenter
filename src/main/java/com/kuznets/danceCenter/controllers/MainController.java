@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Transactional
 public class MainController {
 
-    private SongServiceInterface songService;
-    private ArtistServiceInterface artistService;
-    private PostServiceInterface postService;
-    private UserServiceInterface userService;
-    private UserDetailsServiceImpl userDetailsService;
+    private final SongServiceInterface songService;
+    private final ArtistServiceInterface artistService;
+    private final PostServiceInterface postService;
+    private final UserServiceInterface userService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     public MainController(SongServiceInterface songService, ArtistServiceInterface artistService,

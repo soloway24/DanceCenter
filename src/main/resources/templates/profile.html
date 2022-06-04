@@ -61,7 +61,7 @@
                 <p th:text="${post.date}"></p>
 
                 <div class="text-end">
-                    <form action="../posts/delete/" method="post">
+                    <form action="../../posts/delete/" method="post">
                         <input name="id" type="hidden" th:value="${post.id}">
                         <button class="btn btn-outline-secondary" type="submit">Delete</button>
                     </form>

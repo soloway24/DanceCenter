@@ -1,19 +1,13 @@
 package com.kuznets.danceCenter.controllers;
 
-import com.kuznets.danceCenter.models.AppUser;
 import com.kuznets.danceCenter.models.Song;
 import com.kuznets.danceCenter.services.implementations.UserDetailsServiceImpl;
 import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
 import com.kuznets.danceCenter.services.interfaces.UserServiceInterface;
 import com.kuznets.danceCenter.utils.Utils;
-import com.kuznets.danceCenter.utils.Values;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +22,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -38,9 +34,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/songs")
 public class SongController {
 
-    private SongServiceInterface songService;
-    private UserServiceInterface userService;
-    private UserDetailsServiceImpl userDetailsService;
+    private final SongServiceInterface songService;
+    private final UserServiceInterface userService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     public SongController(SongServiceInterface songService,

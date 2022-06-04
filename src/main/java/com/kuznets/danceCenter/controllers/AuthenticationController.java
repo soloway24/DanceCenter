@@ -1,12 +1,6 @@
 package com.kuznets.danceCenter.controllers;
 
-import com.kuznets.danceCenter.services.interfaces.ArtistServiceInterface;
-import com.kuznets.danceCenter.services.interfaces.PostServiceInterface;
-import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
 import com.kuznets.danceCenter.utils.Utils;
-import com.kuznets.danceCenter.utils.Values;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;

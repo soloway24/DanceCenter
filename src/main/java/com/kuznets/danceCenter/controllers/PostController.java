@@ -28,10 +28,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/posts")
 public class PostController {
 
-    private PostServiceInterface postService;
-    private SongServiceInterface songService;
-    private UserServiceInterface userService;
-    private UserDetailsServiceImpl userDetailsService;
+    private final PostServiceInterface postService;
+    private final SongServiceInterface songService;
+    private final UserServiceInterface userService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     public PostController(PostServiceInterface postService, SongServiceInterface songService,

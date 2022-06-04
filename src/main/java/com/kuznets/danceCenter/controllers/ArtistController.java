@@ -1,18 +1,11 @@
 package com.kuznets.danceCenter.controllers;
 
-import com.kuznets.danceCenter.models.AppUser;
 import com.kuznets.danceCenter.models.Artist;
 import com.kuznets.danceCenter.services.implementations.UserDetailsServiceImpl;
 import com.kuznets.danceCenter.services.interfaces.ArtistServiceInterface;
-import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
 import com.kuznets.danceCenter.services.interfaces.UserServiceInterface;
 import com.kuznets.danceCenter.utils.Utils;
-import com.kuznets.danceCenter.utils.Values;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -28,15 +21,12 @@ import java.util.ArrayList;
 @Transactional
 public class ArtistController {
 
-    private ArtistServiceInterface artistService;
-    private UserServiceInterface userService;
-    private UserDetailsServiceImpl userDetailsService;
+    private final ArtistServiceInterface artistService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public ArtistController(ArtistServiceInterface artistService,
-                            UserServiceInterface userService, UserDetailsServiceImpl userDetailsService) {
+    public ArtistController(ArtistServiceInterface artistService, UserDetailsServiceImpl userDetailsService) {
         this.artistService = artistService;
-        this.userService = userService;
         this.userDetailsService = userDetailsService;
     }
 
