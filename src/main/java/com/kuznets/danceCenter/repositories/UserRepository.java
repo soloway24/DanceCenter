@@ -1,6 +1,7 @@
 package com.kuznets.danceCenter.repositories;
 
 import com.kuznets.danceCenter.models.AppUser;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +18,6 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
 
     @Query("select u from AppUser u where lower(u.username) like lower(concat('%', :username,'%'))")
     List<AppUser> findByUsernameText(@Param("username") String username);
+
+    List<AppUser> findByIdIn(List<Long> users, Sort sort);
 }

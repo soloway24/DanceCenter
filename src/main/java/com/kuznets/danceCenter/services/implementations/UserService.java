@@ -2,21 +2,25 @@ package com.kuznets.danceCenter.services.implementations;
 
 import com.kuznets.danceCenter.models.AppUser;
 import com.kuznets.danceCenter.models.Role;
+import com.kuznets.danceCenter.repositories.PostRepository;
 import com.kuznets.danceCenter.repositories.RoleRepository;
 import com.kuznets.danceCenter.repositories.UserRepository;
 import com.kuznets.danceCenter.services.interfaces.UserServiceInterface;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service @RequiredArgsConstructor @Transactional
 public class UserService implements UserServiceInterface {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PostRepository postRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -33,7 +37,7 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public List<AppUser> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAll(Sort.by("username"));
     }
 
     @Override
@@ -76,5 +80,19 @@ public class UserService implements UserServiceInterface {
     @Override
     public List<AppUser> getByUsernameText(String searchQuery) {
         return userRepository.findByUsernameText(searchQuery);
+    }
+
+    @Override
+    public List<AppUser> sortUsers(List<AppUser> users) {
+        return userRepository.findByIdIn(users.stream().map(AppUser::getId).collect(Collectors.toList()),
+                Sort.by("username"));
+    }
+
+    @Override
+    public void deleteUserByUsername(String username) {
+        AppUser user = userRepository.findByUsername(username);
+        user.getFollowing().clear();
+        postRepository.deleteAll(user.getPosts());
+        userRepository.delete(user);
     }
 }

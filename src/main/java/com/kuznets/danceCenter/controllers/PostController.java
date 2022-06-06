@@ -61,7 +61,7 @@ public class PostController {
         for(AppUser foll : currentUser.getFollowing()) {
             posts.addAll(foll.getPosts());
         }
-        model.addAttribute("posts", posts);
+        model.addAttribute("posts", postService.sortPosts(posts));
         userDetailsService.addUserToModel(model);
         Utils.addAppNameToModel(model);
         return "posts";
@@ -71,7 +71,7 @@ public class PostController {
     public String postsOfUser(@PathVariable("username") String username, Model model) {
         userDetailsService.addUserToModel(model);
         AppUser viewedUser = userService.getUserByUsername(username);
-        model.addAttribute("posts", viewedUser.getPosts());
+        model.addAttribute("posts", postService.sortPosts(viewedUser.getPosts()));
         Utils.addAppNameToModel(model);
         return "posts";
     }

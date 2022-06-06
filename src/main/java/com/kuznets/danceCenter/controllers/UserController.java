@@ -3,6 +3,7 @@ package com.kuznets.danceCenter.controllers;
 
 import com.kuznets.danceCenter.models.AppUser;
 import com.kuznets.danceCenter.services.implementations.UserDetailsServiceImpl;
+import com.kuznets.danceCenter.services.interfaces.PostServiceInterface;
 import com.kuznets.danceCenter.services.interfaces.UserServiceInterface;
 import com.kuznets.danceCenter.utils.Utils;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +28,16 @@ import java.util.List;
 public class UserController {
 
     private final UserServiceInterface userService;
+    private final PostServiceInterface postService;
     private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public UserController(UserServiceInterface userService, UserDetailsServiceImpl userDetailsService) {
+    public UserController(UserServiceInterface userService,
+                          PostServiceInterface postService, UserDetailsServiceImpl userDetailsService) {
         this.userService = userService;
+        this.postService = postService;
         this.userDetailsService = userDetailsService;
     }
-
 
     @GetMapping("/getList")
     public ResponseEntity<List<AppUser>> getUsers() {
@@ -57,6 +60,7 @@ public class UserController {
             return "redirect:/errors/error";
         }
         userDetailsService.addUserToModel(model);
+        model.addAttribute("userPosts", postService.sortPosts(userDetailsService.getCurrentAppUser().getPosts()));
         Utils.addAppNameToModel(model);
         return "profile";
     }
@@ -69,6 +73,7 @@ public class UserController {
         AppUser viewedUser = userService.getUserByUsername(username);
         userDetailsService.addUserToModel(model);
         model.addAttribute("users", Collections.singleton(viewedUser));
+        model.addAttribute("userPosts", postService.sortPosts(viewedUser.getPosts()));
         model.addAttribute("showPosts", true);
         Utils.addAppNameToModel(model);
         return "users";
@@ -77,7 +82,7 @@ public class UserController {
     @GetMapping("/{username}/followers")
     public String userFollowers(@PathVariable("username") String username, Model model) {
         AppUser viewedUser = userService.getUserByUsername(username);
-        model.addAttribute("users", viewedUser.getFollowers());
+        model.addAttribute("users",  userService.sortUsers(viewedUser.getFollowers()));
         userDetailsService.addUserToModel(model);
         Utils.addAppNameToModel(model);
         return "users";
@@ -86,7 +91,7 @@ public class UserController {
     @GetMapping("/{username}/following")
     public String userFollowing(@PathVariable("username") String username, Model model) {
         AppUser viewedUser = userService.getUserByUsername(username);
-        model.addAttribute("users", viewedUser.getFollowing());
+        model.addAttribute("users", userService.sortUsers(viewedUser.getFollowing()));
         userDetailsService.addUserToModel(model);
         Utils.addAppNameToModel(model);
         return "users";

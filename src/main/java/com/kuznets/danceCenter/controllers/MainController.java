@@ -6,9 +6,7 @@ import com.kuznets.danceCenter.services.interfaces.PostServiceInterface;
 import com.kuznets.danceCenter.services.interfaces.SongServiceInterface;
 import com.kuznets.danceCenter.services.interfaces.UserServiceInterface;
 import com.kuznets.danceCenter.utils.Utils;
-import com.kuznets.danceCenter.utils.Values;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -68,7 +66,7 @@ public class MainController {
     public String search(@RequestParam String searchQuery, Model model) {
         model.addAttribute("users", userService.getByUsernameText(searchQuery));
         model.addAttribute("artists", artistService.getByNameText(searchQuery));
-        model.addAttribute("songs", songService.getByTitleText(searchQuery));
+        model.addAttribute("songs", songService.getBySearchText(searchQuery));
         model.addAttribute("searchQuery", searchQuery);
         userDetailsService.addUserToModel(model);
         Utils.addAppNameToModel(model);

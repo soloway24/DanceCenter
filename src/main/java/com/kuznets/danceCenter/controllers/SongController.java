@@ -35,14 +35,12 @@ import java.util.stream.Collectors;
 public class SongController {
 
     private final SongServiceInterface songService;
-    private final UserServiceInterface userService;
     private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     public SongController(SongServiceInterface songService,
-                          UserServiceInterface userService, UserDetailsServiceImpl userDetailsService) {
+                          UserDetailsServiceImpl userDetailsService) {
         this.songService = songService;
-        this.userService = userService;
         this.userDetailsService = userDetailsService;
     }
 

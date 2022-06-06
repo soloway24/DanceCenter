@@ -116,11 +116,6 @@ function resetEditedArtistList() {
     editedArtistList.innerHTML = "";
 }
 
-function getValueFromInputById(id) {
-    let input = document.getElementById(id);
-    return input.value;
-}
-
 loadFileInput.onchange = async function () {
 
     const nFiles = loadFileInput.files.length;
@@ -132,6 +127,7 @@ loadFileInput.onchange = async function () {
 
     let tagList;
     let fileInfoSuccess = true;
+
     await fetch("/songs/multipleFileInfo", {
         method: "POST",
         body: formData,

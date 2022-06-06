@@ -23,5 +23,8 @@ public interface UserServiceInterface {
 
     void saveUser(AppUser currentUser);
 
+    void deleteUserByUsername(String username);
+
+    List<AppUser> sortUsers(List<AppUser> users);
 
 }

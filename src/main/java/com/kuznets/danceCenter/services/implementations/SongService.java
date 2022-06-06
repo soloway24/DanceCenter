@@ -16,6 +16,7 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -139,13 +141,27 @@ public class SongService implements SongServiceInterface {
     }
 
     @Override
-    public Iterable<Song> getAll() {
-        return songRepository.findAll();
+    public List<Song> getAll() {
+        return songRepository.findAll(Sort.by("title"));
     }
 
     @Override
-    public List<Song> getByTitleText(String searchQuery) {
-        return songRepository.findByTitleText(searchQuery);
+    public List<Song> getBySearchText(String searchQuery) {
+        List<Song> allSongs = songRepository.findAll(Sort.by("title"));
+        List<Song> result = new ArrayList<>();
+        for(Song song : allSongs) {
+            boolean artistsContain = false;
+            for (Artist artist : song.getArtists()){
+                if(artist.getName().toLowerCase().contains(searchQuery.toLowerCase())){
+                    artistsContain = true;
+                    break;
+                }
+            }
+
+            if(song.getTitle().toLowerCase().contains(searchQuery.toLowerCase()) || artistsContain)
+                result.add(song);
+        }
+        return result;
     }
 
     @Override
@@ -218,5 +234,11 @@ public class SongService implements SongServiceInterface {
         newFile.delete();
 
         return map;
+    }
+
+    @Override
+    public List<Song> sortSongs(List<Song> songs) {
+        return songRepository.findByIdIn(songs.stream().map(Song::getId).collect(Collectors.toList()),
+                Sort.by("title"));
     }
 }

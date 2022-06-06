@@ -38,7 +38,7 @@
             </form>
 
             <div class="my-3 p-3 bg-body rounded shadow"
-                 th:each="post : ${currentUser.posts}" >
+                 th:each="post : ${userPosts}" >
                 <h2 class="border-bottom pb-2 mb-0">
                     <a class="dropdown-item" th:href="'/users/'+${post.getAppUser().getUsername()}" th:text="'@'+${post.getAppUser().getUsername()}"></a>
                 </h2>

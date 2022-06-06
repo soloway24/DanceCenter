@@ -10,9 +10,9 @@
 </head>
 <body>
     <div th:replace="header :: header"></div>
-    <div class="container w-50">
-        <p th:if="${notification}" th:text="${notification}"></p>
-    </div>
+<!--    <div class="container w-50">-->
+<!--        <p th:if="${notification}" th:text="${notification}"></p>-->
+<!--    </div>-->
     <div class="container w-50">
         <h5 class="border-bottom pb-2 mb-0">Add Post</h5>
 
@@ -30,11 +30,11 @@
                         <strong class="text-gray-dark" th:text="${song.title}"></strong><strong class="text-gray-dark" th:text="' - '+${song.artists}"></strong>
                     </p>
                     <audio controls th:src="'../'+${song.location}"></audio>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editSongModal"
+                    <button type="button" class="btn btn-outline-success d-block mb-1" data-bs-toggle="modal" data-bs-target="#editSongModal"
                             th:attr="data-song_id=${song.id},data-song_title=${song.title},data-song_artists=${song.artists}">Edit</button>
                     <form action="../songs/delete/" method="post">
                         <input name="id" type="hidden" th:value="${song.id}">
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-outline-danger">Delete</button>
                     </form>
                 </div>
             </div>

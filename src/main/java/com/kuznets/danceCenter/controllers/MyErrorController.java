@@ -42,7 +42,7 @@ public class MyErrorController implements ErrorController {
     @GetMapping("/fileInfo")
     public String errorFileInfo(Model model){
         Utils.addAppNameToModel(model);
-        model.addAttribute("notification", "Couldn't fetch file info.");
+        model.addAttribute("notification", "Couldn't fetch file info. Max size of uploaded files is 200MB.");
         return "errorPage";
     }
 

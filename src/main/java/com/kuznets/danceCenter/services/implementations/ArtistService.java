@@ -6,6 +6,7 @@ import com.kuznets.danceCenter.models.Song;
 import com.kuznets.danceCenter.repositories.ArtistRepository;
 import com.kuznets.danceCenter.services.interfaces.ArtistServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +46,7 @@ public class ArtistService implements ArtistServiceInterface {
 
     @Override
     public Iterable<Artist> getAll() {
-        return artistRepository.findAll();
+        return artistRepository.findAll(Sort.by("name"));
     }
 
     @Override

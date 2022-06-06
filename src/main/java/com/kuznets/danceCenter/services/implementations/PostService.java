@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -50,4 +51,11 @@ public class PostService implements PostServiceInterface {
         if(!postExistsById(id)) throw new PostNotFoundException(id);
         postRepository.deleteById(id);
     }
+
+    public List<Post> sortPosts(List<Post> posts) {
+        return postRepository.findByIdIn(posts.stream().map(Post::getId).collect(Collectors.toList()),
+                Sort.by(Sort.Direction.DESC, "date"));
+    }
+
+
 }

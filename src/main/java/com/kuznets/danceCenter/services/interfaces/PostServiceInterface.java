@@ -14,4 +14,6 @@ public interface PostServiceInterface {
     Iterable<Post> getAll();
 
     void deletePostById(Long id) throws Exception;
+
+    List<Post> sortPosts(List<Post> posts);
 }
